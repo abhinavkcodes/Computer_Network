@@ -1,0 +1,1 @@
+[{"id":"u3-q1","question":"Which TCP flag starts a three-way handshake?","options":["SYN","FIN","RST","PSH"],"answer":0,"explanation":"A client sends SYN to request synchronization of sequence numbers."}]

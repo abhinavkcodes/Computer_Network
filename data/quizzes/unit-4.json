@@ -1,0 +1,1 @@
+[{"id":"u4-q1","question":"For 192.168.1.0/24, what is the subnet mask?","options":["255.255.255.0","255.255.0.0","255.0.0.0","255.255.255.252"],"answer":0,"explanation":"/24 means the first 24 bits are network bits."}]

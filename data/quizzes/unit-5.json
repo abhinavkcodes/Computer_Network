@@ -1,0 +1,1 @@
+[{"id":"u5-q1","question":"Which protocol commonly resolves a domain name before an HTTPS connection?","options":["DNS","ARP","ICMP","FTP"],"answer":0,"explanation":"DNS maps names such as google.com to IP addresses."}]

@@ -1,0 +1,1 @@
+[{"id":"u2-q1","question":"In packet switching, what can happen to packets from the same message?","options":["They may take different paths","They require a reserved circuit","They cannot be reordered","They avoid headers"],"answer":0,"explanation":"Packet switching forwards independent packets, often over different paths."}]
