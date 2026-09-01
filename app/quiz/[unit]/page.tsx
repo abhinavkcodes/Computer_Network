@@ -4,16 +4,11 @@ export default function Quiz({ params }: { params: { unit: string } }) {
   return (
     <div className="space-y-8 max-w-3xl">
       <div>
-        <p className="text-sm font-600 text-slate-600 uppercase tracking-wide">
-          Assessment
-        </p>
-        <h1 className="mt-2 text-4xl font-bold text-slate-900">
-          {params.unit === "mixed"
-            ? "Mixed Practice Quiz"
-            : `Unit ${params.unit} Quiz`}
+        <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
+          {params.unit === "mixed" ? "Mixed Practice Quiz" : `Unit ${params.unit} Quiz`}
         </h1>
-        <p className="mt-2 text-slate-600">
-          Test your knowledge and track your progress
+        <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+          Answer at your own pace — press 1–4 to pick, Enter to move on.
         </p>
       </div>
       <QuizRunner unit={params.unit} />
