@@ -1,1 +1,140 @@
-[{"id":"u2-q1","question":"In packet switching, what can happen to packets from the same message?","options":["They may take different paths","They require a reserved circuit","They cannot be reordered","They avoid headers"],"answer":0,"explanation":"Packet switching forwards independent packets, often over different paths."}]
+[
+  {
+    "question": "In classful IPv4 addressing, which class is intended for very large organizations and starts with binary '0'?",
+    "options": ["Class A", "Class B", "Class C", "Class D"],
+    "answer": 0,
+    "explanation": "Class A addresses begin with a leading bit of 0, reserving the first octet for the network ID and the remaining three for hosts — suited to very large networks."
+  },
+  {
+    "question": "Which IPv4 class is reserved for multicasting?",
+    "options": ["Class B", "Class C", "Class D", "Class E"],
+    "answer": 2,
+    "explanation": "Class D addresses (224.0.0.0–239.255.255.255) are reserved for multicast group communication, not for individual host addressing."
+  },
+  {
+    "question": "To find which network an IP address belongs to given a subnet mask, which operation is performed?",
+    "options": ["OR the IP with the mask", "AND the IP with the mask", "XOR the IP with the mask", "Add the IP and the mask"],
+    "answer": 1,
+    "explanation": "The Network ID is found by performing a bitwise AND between the IP address and the subnet mask."
+  },
+  {
+    "question": "For the address 192.168.60.55/20, what is the Network ID?",
+    "options": ["192.168.48.0", "192.168.32.0", "192.168.60.0", "192.168.0.0"],
+    "answer": 0,
+    "explanation": "With a /20 mask, the third octet (60) is ANDed against 240, giving 48 — so the Network ID is 192.168.48.0, as worked through in the notes."
+  },
+  {
+    "question": "For the address 192.168.60.55/20, what is the Broadcast ID?",
+    "options": ["192.168.63.255", "192.168.55.255", "192.168.255.255", "192.168.60.255"],
+    "answer": 0,
+    "explanation": "For a /20 block starting at 192.168.48.0, the broadcast address is the last address in that block: 192.168.63.255."
+  },
+  {
+    "question": "For the address 172.10.85.60/22, what is the usable host range?",
+    "options": [
+      "172.10.84.1 – 172.10.87.254",
+      "172.10.85.1 – 172.10.85.254",
+      "172.10.84.0 – 172.10.87.255",
+      "172.10.80.1 – 172.10.83.254"
+    ],
+    "answer": 0,
+    "explanation": "With a /22 mask, the block is 172.10.84.0 to 172.10.87.255; excluding the network and broadcast addresses, usable hosts run from 172.10.84.1 to 172.10.87.254."
+  },
+  {
+    "question": "For the address 172.10.60.16/29, what is the Broadcast ID?",
+    "options": ["172.10.60.23", "172.10.60.31", "172.10.60.17", "172.10.60.255"],
+    "answer": 0,
+    "explanation": "A /29 mask allocates blocks of 8 addresses. Starting at 172.10.60.16, the block runs to 172.10.60.23, which is the broadcast address."
+  },
+  {
+    "question": "Which of the following is NOT one of the required conditions for valid supernetting?",
+    "options": [
+      "All networks must have the same subnet mask",
+      "Networks must be contiguous",
+      "The number of networks combined must be a power of 2",
+      "All networks must belong to different IP classes"
+    ],
+    "answer": 3,
+    "explanation": "Supernetting requires equal-size (same mask) contiguous blocks combined in powers of 2 — it does not require networks to be from different classes; in fact they're typically combined within the same class range."
+  },
+  {
+    "question": "What is the primary purpose of NAT (Network Address Translation)?",
+    "options": [
+      "To encrypt traffic between two hosts",
+      "To translate private IP addresses to a public IP address for internet access",
+      "To assign MAC addresses to new devices",
+      "To split one network into multiple broadcast domains"
+    ],
+    "answer": 1,
+    "explanation": "NAT allows multiple devices on a private network to share a single public IP address when communicating with the internet."
+  },
+  {
+    "question": "Which network device operates by simply regenerating and amplifying a signal, with no filtering or addressing intelligence?",
+    "options": ["Switch", "Router", "Repeater", "Bridge"],
+    "answer": 2,
+    "explanation": "A repeater's only job is to regenerate a weakened signal so it can travel further, without inspecting or filtering traffic."
+  },
+  {
+    "question": "Which device operates at a higher layer and can filter traffic based on MAC addresses, dividing a network into separate collision domains?",
+    "options": ["Hub", "Repeater", "Bridge", "None of these"],
+    "answer": 2,
+    "explanation": "A bridge examines MAC addresses to decide whether to forward frames between segments, effectively separating collision domains — unlike a hub, which just broadcasts to all ports."
+  },
+  {
+    "question": "What is a key benefit of configuring VLANs on a switch?",
+    "options": [
+      "It physically separates cables into different rooms",
+      "It logically groups devices into separate broadcast domains regardless of physical location",
+      "It increases the maximum cable length allowed",
+      "It converts digital signals to analog"
+    ],
+    "answer": 1,
+    "explanation": "VLANs let you logically segment a switch into multiple broadcast domains, grouping devices by function rather than physical location."
+  },
+  {
+    "question": "Which of these is a valid private IPv4 address range reserved by IANA for internal networks?",
+    "options": ["8.8.8.0 – 8.8.8.255", "192.168.0.0 – 192.168.255.255", "1.1.1.0 – 1.1.1.255", "203.0.113.0 – 203.0.113.255"],
+    "answer": 1,
+    "explanation": "192.168.0.0/16 is one of the three IANA-reserved private ranges (alongside 10.0.0.0/8 and 172.16.0.0/12), meant for internal use and not routable on the public internet."
+  },
+  {
+    "question": "Which protocol is responsible for resolving an IP address to its corresponding MAC address on a local network?",
+    "options": ["DHCP", "ARP", "NAT", "DNS"],
+    "answer": 1,
+    "explanation": "ARP (Address Resolution Protocol) maps a known IP address to the physical MAC address needed for delivery on a local network segment."
+  },
+  {
+    "question": "What is the main purpose of DHCP in a network?",
+    "options": [
+      "To translate domain names into IP addresses",
+      "To automatically assign IP addresses and network configuration to devices",
+      "To encrypt data sent over a network",
+      "To physically connect two network segments"
+    ],
+    "answer": 1,
+    "explanation": "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses, subnet masks, gateways, and other settings to devices joining a network."
+  },
+  {
+    "question": "At which OSI/TCP-IP layer does a router primarily operate?",
+    "options": ["Physical Layer", "Data Link Layer", "Network Layer", "Application Layer"],
+    "answer": 2,
+    "explanation": "Routers make forwarding decisions based on IP addresses, which places their primary function at the Network layer."
+  },
+  {
+    "question": "What is the loopback address used to test a device's own network stack?",
+    "options": ["0.0.0.0", "255.255.255.255", "127.0.0.1", "169.254.0.1"],
+    "answer": 2,
+    "explanation": "127.0.0.1 is the standard IPv4 loopback address, used by a device to send traffic to itself for testing purposes."
+  },
+  {
+    "question": "Which statement correctly distinguishes a static IP address from a dynamic one?",
+    "options": [
+      "A static IP changes every time the device reconnects; a dynamic IP never changes",
+      "A static IP is manually configured and stays fixed; a dynamic IP is automatically assigned and may change over time",
+      "Static and dynamic IPs are the same thing with different names",
+      "Only dynamic IPs can be used on the internet"
+    ],
+    "answer": 1,
+    "explanation": "A static IP address is manually assigned and remains constant, while a dynamic IP is assigned automatically (typically via DHCP) and can change on renewal."
+  }
+]
