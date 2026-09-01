@@ -1,146 +1,158 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import u1 from "@/data/quizzes/unit-1.json";
+import u2 from "@/data/quizzes/unit-2.json";
+import u3 from "@/data/quizzes/unit-3.json";
+import u4 from "@/data/quizzes/unit-4.json";
+import u5 from "@/data/quizzes/unit-5.json";
+
+const TOTAL_QUESTIONS = [u1, u2, u3, u4, u5].reduce((sum, bank) => sum + (bank as any[]).length, 0);
+
+const hops = [
+  {
+    n: 1,
+    host: "notes",
+    title: "Notes",
+    detail: "5 units of study material",
+    body: "Faculty PDFs for every unit, viewable inline with fullscreen and keyboard navigation between them.",
+    href: "/notes",
+  },
+  {
+    n: 2,
+    host: "quiz",
+    title: "Quizzes",
+    detail: `${TOTAL_QUESTIONS} practice questions`,
+    body: "Unit-wise and mixed sets with instant feedback, a live streak, and a review of exactly what you missed.",
+    href: "/quiz/mixed",
+  },
+  {
+    n: 3,
+    host: "calc",
+    title: "Calculator",
+    detail: "CIDR + VLSM, step by step",
+    body: "Work the subnet math yourself, then check it — every octet-by-octet AND operation shown, not just the answer.",
+    href: "/calculator",
+  },
+];
+
+const categories = [
+  { label: "Topologies", items: "Mesh, Star, Bus, Ring, Tree, Hybrid" },
+  { label: "Layers", items: "OSI 7-layer model, TCP/IP 5-layer model" },
+  { label: "Addressing", items: "IPv4 classes, CIDR, VLSM, NAT" },
+  { label: "Switching & Devices", items: "Circuit, packet, and message switching; repeaters, bridges, switches, routers, VLANs" },
+];
 
 export default function Home() {
   return (
-    <div className="space-y-10">
-      {/* Header */}
-      <div>
-        <h1 className="text-4xl font-bold text-slate-900">
-          Welcome to CN.Lab
-        </h1>
-        <p className="mt-2 text-lg text-slate-600">
-          Master computer networking concepts through structured learning and
-          practice.
-        </p>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <div className="text-slate-600 text-sm font-600 uppercase tracking-wide">
-            Getting Started
-          </div>
-          <p className="mt-4 text-slate-700">
-            Begin with the comprehensive study notes covering all 5 units of
-            computer networks.
+    <div className="space-y-20">
+      {/* Hero */}
+      <div className="grid lg:grid-cols-5 gap-10 items-start">
+        <div className="lg:col-span-3 max-w-lg">
+          <h1
+            className="text-4xl sm:text-5xl font-bold leading-[1.08]"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Networking makes more sense once you've routed through it yourself.
+          </h1>
+          <p className="mt-5 text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+            This lab covers all five units with notes to read, questions to
+            test yourself against, and a calculator that shows its work —
+            built for the way this course is actually examined.
           </p>
           <Link
             href="/notes"
-            className="mt-4 inline-flex items-center gap-2 text-blue-600 font-500 hover:text-blue-700"
+            className="mt-7 inline-flex items-center gap-2 text-sm font-medium"
+            style={{ color: "var(--accent)" }}
           >
-            View Notes →
+            Start with Unit 1
+            <ArrowRight size={15} strokeWidth={2} />
           </Link>
         </div>
 
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <div className="text-slate-600 text-sm font-600 uppercase tracking-wide">
-            Self Assessment
-          </div>
-          <p className="mt-4 text-slate-700">
-            Test your knowledge with unit-based quizzes and track your progress.
-          </p>
-          <Link
-            href="/quiz/mixed"
-            className="mt-4 inline-flex items-center gap-2 text-blue-600 font-500 hover:text-blue-700"
+        {/* Traceroute panel — the one deliberate signature element */}
+        <div className="lg:col-span-2 rounded-lg overflow-hidden" style={{ background: "var(--bg-dark)" }}>
+          <div
+            className="px-4 py-2.5 flex items-center gap-1.5"
+            style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
           >
-            Take Quiz →
-          </Link>
-        </div>
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }} />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }} />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }} />
+            <span className="mono ml-2 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
+              trace.sh
+            </span>
+          </div>
 
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <div className="text-slate-600 text-sm font-600 uppercase tracking-wide">
-            Practice Calculations
-          </div>
-          <p className="mt-4 text-slate-700">
-            Master subnet calculations with CIDR notation and VLSM allocation.
-          </p>
-          <Link
-            href="/calculator"
-            className="mt-4 inline-flex items-center gap-2 text-blue-600 font-500 hover:text-blue-700"
-          >
-            Open Calculator →
-          </Link>
-        </div>
-      </div>
-
-      {/* Topics Overview */}
-      <div className="bg-white rounded-lg border border-slate-200 p-8">
-        <h2 className="text-xl font-bold text-slate-900">Topics Covered</h2>
-        <p className="mt-2 text-slate-600">
-          This course lab covers essential computer networking concepts across 5
-          units:
-        </p>
-        <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-4 text-sm text-slate-700">
-          <div className="flex gap-3">
-            <span className="text-blue-600 font-bold">•</span>
-            <span>Network Topologies & Architectures</span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-blue-600 font-bold">•</span>
-            <span>Switching & Forwarding</span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-blue-600 font-bold">•</span>
-            <span>OSI & TCP/IP Layers</span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-blue-600 font-bold">•</span>
-            <span>Packet Structure & Flow</span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-blue-600 font-bold">•</span>
-            <span>IP Addressing & Subnetting</span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-blue-600 font-bold">•</span>
-            <span>Routing & Network Protocols</span>
+          <div className="mono p-5 text-sm leading-7">
+            <p className="terminal-line" style={{ animationDelay: "0ms", color: "rgba(255,255,255,0.5)" }}>
+              $ trace --learn networking
+            </p>
+            {hops.map((h, idx) => (
+              <p
+                key={h.host}
+                className="terminal-line"
+                style={{ animationDelay: `${(idx + 1) * 120}ms` }}
+              >
+                <span style={{ color: "var(--accent)" }}>{h.n}</span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>{"  "}{h.host.padEnd(8, " ")}</span>
+                <span style={{ color: "rgba(255,255,255,0.45)" }}>{h.detail}</span>
+              </p>
+            ))}
+            <p
+              className="terminal-line mt-2"
+              style={{ animationDelay: `${(hops.length + 1) * 120}ms`, color: "rgba(255,255,255,0.4)" }}
+            >
+              route resolved in {hops.length} hops
+            </p>
           </div>
         </div>
       </div>
 
-      {/* How to Use */}
-      <div className="bg-slate-50 rounded-lg border border-slate-200 p-8">
-        <h2 className="text-xl font-bold text-slate-900">How to Use This Lab</h2>
-        <div className="mt-6 space-y-4">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-blue-600 text-white text-sm font-bold">
-                1
-              </div>
+      {/* Hops as tools — numbering justified because these ARE the 3 hops above */}
+      <div className="grid md:grid-cols-3 gap-px" style={{ background: "var(--border)" }}>
+        {hops.map((h) => (
+          <Link
+            key={h.href}
+            href={h.href}
+            className="feature-card group p-8"
+            style={{ background: "var(--bg-card)" }}
+          >
+            <div className="flex items-baseline gap-2">
+              <span className="mono text-sm" style={{ color: "var(--accent)" }}>{h.n}</span>
+              <h3 className="text-lg font-semibold" style={{ color: "var(--text-primary)" }}>
+                {h.title}
+              </h3>
             </div>
-            <div>
-              <p className="font-600 text-slate-900">Start with Notes</p>
-              <p className="text-sm text-slate-600">
-                Read through faculty PDFs to understand key concepts
+            <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              {h.body}
+            </p>
+            <div
+              className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium"
+              style={{ color: "var(--text-primary)" }}
+            >
+              Open
+              <ArrowRight size={13} strokeWidth={2} className="feature-arrow transition-transform duration-150" />
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Syllabus, grouped by real category rather than a flat numbered list */}
+      <div>
+        <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
+          What's in the syllabus
+        </h2>
+        <div className="mt-6 space-y-5">
+          {categories.map((c) => (
+            <div key={c.label} className="grid sm:grid-cols-4 gap-2 sm:gap-6 py-4" style={{ borderTop: "1px solid var(--border)" }}>
+              <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                {c.label}
+              </p>
+              <p className="sm:col-span-3 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                {c.items}
               </p>
             </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-blue-600 text-white text-sm font-bold">
-                2
-              </div>
-            </div>
-            <div>
-              <p className="font-600 text-slate-900">Test Your Knowledge</p>
-              <p className="text-sm text-slate-600">
-                Take quizzes to reinforce learning and identify weak areas
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-blue-600 text-white text-sm font-bold">
-                3
-              </div>
-            </div>
-            <div>
-              <p className="font-600 text-slate-900">Master Calculations</p>
-              <p className="text-sm text-slate-600">
-                Practice subnet math and network calculations
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
