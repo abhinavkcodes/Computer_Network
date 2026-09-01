@@ -2,15 +2,32 @@
 import { useProgress } from "@/lib/progressStore";
 import { units } from "@/lib/content";
 
+function SignalBars({ pct }: { pct: number }) {
+  const filled = pct >= 90 ? 4 : pct >= 75 ? 3 : pct >= 50 ? 2 : pct > 0 ? 1 : 0;
+  return (
+    <div className="flex items-end gap-0.5" aria-label={`${pct}% signal`}>
+      {[3, 6, 9, 12].map((h, i) => (
+        <div
+          key={h}
+          style={{
+            width: 3,
+            height: h,
+            background: i < filled ? "var(--accent)" : "var(--border)",
+            borderRadius: 1,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function ProgressPage() {
   const { quizRuns } = useProgress();
 
   const avgScore =
     quizRuns.length > 0
       ? Math.round(
-          (quizRuns.reduce((sum, r) => sum + r.score / r.total, 0) /
-            quizRuns.length) *
-            100
+          (quizRuns.reduce((sum, r) => sum + r.score / r.total, 0) / quizRuns.length) * 100
         )
       : 0;
 
@@ -18,160 +35,146 @@ export default function ProgressPage() {
 
   const unitStats = units.map((unit) => {
     const unitRuns = quizRuns.filter((r) => r.unit === `${unit}`);
-    if (unitRuns.length === 0) return { unit, attempts: 0, best: 0, latest: 0 };
-    
+    if (unitRuns.length === 0) return { unit, attempts: 0, best: 0, latest: 0, up: false };
     const best = Math.max(...unitRuns.map((r) => Math.round((r.score / r.total) * 100)));
-    const latest = Math.round((unitRuns[unitRuns.length - 1].score / unitRuns[unitRuns.length - 1].total) * 100);
-    
-    return { unit, attempts: unitRuns.length, best, latest };
+    const latest = Math.round(
+      (unitRuns[unitRuns.length - 1].score / unitRuns[unitRuns.length - 1].total) * 100
+    );
+    return { unit, attempts: unitRuns.length, best, latest, up: true };
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-slate-900">Progress Dashboard</h1>
-        <p className="mt-2 text-slate-600">
-          Track your learning progress and quiz performance
+        <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
+          Progress
+        </h1>
+        <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+          Every unit's link status and your full connection log.
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <div className="text-slate-600 text-sm font-600 uppercase tracking-wide">
-            Quiz Attempts
-          </div>
-          <div className="mt-4 text-3xl font-bold text-slate-900">
-            {quizRuns.length}
-          </div>
-          <p className="mt-2 text-sm text-slate-600">
-            Total assessments completed
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <div className="text-slate-600 text-sm font-600 uppercase tracking-wide">
-            Average Score
-          </div>
-          <div className="mt-4 text-3xl font-bold text-slate-900">
-            {avgScore}%
-          </div>
-          <p className="mt-2 text-sm text-slate-600">
-            Across all attempts
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <div className="text-slate-600 text-sm font-600 uppercase tracking-wide">
-            Latest Result
-          </div>
-          <div className="mt-4 text-3xl font-bold text-slate-900">
-            {lastAttempt
-              ? `${lastAttempt.score}/${lastAttempt.total}`
-              : "—"}
-          </div>
-          <p className="mt-2 text-sm text-slate-600">
-            {lastAttempt
-              ? new Date(lastAttempt.at).toLocaleDateString()
-              : "No attempts yet"}
-          </p>
-        </div>
+      {/* Status line — one compact readout instead of three repeated stat cards */}
+      <div
+        className="mono flex flex-wrap items-center gap-x-8 gap-y-2 px-6 py-4 rounded-lg text-sm"
+        style={{ background: "var(--bg-dark)", color: "rgba(255,255,255,0.85)" }}
+      >
+        <span>
+          <span style={{ color: "var(--accent)" }}>{quizRuns.length}</span> attempts logged
+        </span>
+        <span style={{ color: "rgba(255,255,255,0.25)" }}>·</span>
+        <span>
+          <span style={{ color: "var(--accent)" }}>{avgScore}%</span> average signal
+        </span>
+        <span style={{ color: "rgba(255,255,255,0.25)" }}>·</span>
+        <span>
+          last sync{" "}
+          <span style={{ color: "var(--accent)" }}>
+            {lastAttempt ? new Date(lastAttempt.at).toLocaleDateString() : "never"}
+          </span>
+        </span>
       </div>
 
-      {/* Unit Performance */}
-      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-        <div className="px-8 py-6 border-b border-slate-200">
-          <h2 className="text-xl font-bold text-slate-900">Unit Performance</h2>
+      {/* Link Status */}
+      <div className="card overflow-hidden">
+        <div className="px-6 py-4 border-b" style={{ borderColor: "var(--border)" }}>
+          <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
+            Link status
+          </h2>
         </div>
-        <div className="overflow-x-auto">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Unit</th>
-                <th>Attempts</th>
-                <th>Best Score</th>
-                <th>Latest Score</th>
-                <th>Status</th>
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th>State</th>
+              <th>Signal</th>
+              <th>Attempts</th>
+              <th>Latest</th>
+            </tr>
+          </thead>
+          <tbody>
+            {unitStats.map((stat) => (
+              <tr key={stat.unit}>
+                <td className="font-medium">Unit {stat.unit}</td>
+                <td>
+                  <span
+                    className="mono text-xs"
+                    style={{ color: stat.up ? "var(--accent)" : "var(--text-secondary)" }}
+                  >
+                    {stat.up ? "UP" : "DOWN"}
+                  </span>
+                </td>
+                <td>
+                  {stat.attempts > 0 ? (
+                    <div className="flex items-center gap-2">
+                      <SignalBars pct={stat.best} />
+                      <span className="mono text-xs" style={{ color: "var(--text-secondary)" }}>
+                        {stat.best}%
+                      </span>
+                    </div>
+                  ) : (
+                    <span style={{ color: "var(--text-secondary)" }}>—</span>
+                  )}
+                </td>
+                <td>{stat.attempts || "—"}</td>
+                <td>{stat.latest > 0 ? `${stat.latest}%` : "—"}</td>
               </tr>
-            </thead>
-            <tbody>
-              {unitStats.map((stat) => (
-                <tr key={stat.unit}>
-                  <td className="font-600">Unit {stat.unit}</td>
-                  <td>{stat.attempts}</td>
-                  <td>{stat.best > 0 ? `${stat.best}%` : "—"}</td>
-                  <td>{stat.latest > 0 ? `${stat.latest}%` : "—"}</td>
-                  <td>
-                    {stat.attempts === 0 ? (
-                      <span className="text-slate-500 text-sm">Not started</span>
-                    ) : stat.best >= 80 ? (
-                      <span className="text-green-600 text-sm font-600">
-                        ✓ Mastered
-                      </span>
-                    ) : stat.best >= 60 ? (
-                      <span className="text-blue-600 text-sm font-600">
-                        → In Progress
-                      </span>
-                    ) : (
-                      <span className="text-orange-600 text-sm font-600">
-                        ⚠ Needs Work
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {/* Recent Attempts */}
-      {quizRuns.length > 0 && (
-        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-          <div className="px-8 py-6 border-b border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900">Recent Attempts</h2>
-          </div>
-          <div className="divide-y divide-slate-200">
+      {/* Connection Log */}
+      <div className="card overflow-hidden">
+        <div className="px-6 py-4 border-b" style={{ borderColor: "var(--border)" }}>
+          <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
+            Connection log
+          </h2>
+        </div>
+
+        {quizRuns.length > 0 ? (
+          <div className="mono text-xs sm:text-sm divide-y" style={{ borderColor: "var(--border)" }}>
             {quizRuns
               .slice()
               .reverse()
-              .slice(0, 10)
-              .map((run, idx) => (
-                <div
-                  key={idx}
-                  className="px-8 py-4 flex items-center justify-between hover:bg-slate-50"
-                >
-                  <div>
-                    <p className="font-600 text-slate-900">Unit {run.unit}</p>
-                    <p className="text-sm text-slate-600">
-                      {new Date(run.at).toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-slate-900">
-                      {run.score}/{run.total}
+              .slice(0, 12)
+              .map((run, idx) => {
+                const pct = Math.round((run.score / run.total) * 100);
+                return (
+                  <div
+                    key={idx}
+                    className="px-6 py-3 flex items-center justify-between gap-4"
+                    style={{ borderColor: "var(--border)" }}
+                  >
+                    <div className="flex items-center gap-4 min-w-0">
+                      <span style={{ color: "var(--text-secondary)" }}>
+                        [{new Date(run.at).toLocaleString()}]
+                      </span>
+                      <span style={{ color: "var(--text-primary)" }}>unit-{run.unit}</span>
                     </div>
-                    <p className="text-sm text-slate-600">
-                      {Math.round((run.score / run.total) * 100)}%
-                    </p>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <span style={{ color: "var(--text-secondary)" }}>
+                        {run.score}/{run.total}
+                      </span>
+                      <span
+                        className="font-medium"
+                        style={{ color: pct >= 70 ? "var(--accent)" : pct >= 50 ? "#c77d1a" : "#b3261e" }}
+                      >
+                        {pct}%
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
-        </div>
-      )}
-
-      {/* Empty State */}
-      {quizRuns.length === 0 && (
-        <div className="bg-slate-50 rounded-lg border border-slate-200 p-12 text-center">
-          <p className="text-slate-600">No quiz attempts yet.</p>
-          <p className="mt-2 text-sm text-slate-500">
-            Start with the Notes section and then take a Quiz to begin tracking
-            your progress.
-          </p>
-        </div>
-      )}
+        ) : (
+          <div className="p-10 text-center" style={{ color: "var(--text-secondary)" }}>
+            <p className="mono text-sm">No connections logged yet.</p>
+            <p className="mt-1 text-sm">Take a quiz to open your first link.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
