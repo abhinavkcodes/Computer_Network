@@ -2,17 +2,21 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4">
+    <div
+      className="flex min-h-screen flex-col items-center justify-center px-4"
+      style={{ background: "var(--bg-card)" }}
+    >
       <div className="max-w-md text-center">
-        <h1 className="text-6xl font-bold text-slate-900">404</h1>
-        <p className="mt-4 text-xl font-600 text-slate-700">Page not found</p>
-        <p className="mt-2 text-slate-600">
+        <h1 className="text-6xl font-bold" style={{ color: "var(--text-primary)" }}>
+          404
+        </h1>
+        <p className="mt-4 text-xl font-semibold" style={{ color: "var(--text-primary)" }}>
+          Page not found
+        </p>
+        <p className="mt-2" style={{ color: "var(--text-secondary)" }}>
           Sorry, the page you are looking for does not exist.
         </p>
-        <Link
-          href="/"
-          className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-600 rounded-lg hover:bg-blue-700 transition"
-        >
+        <Link href="/" className="btn btn-primary mt-8 inline-flex">
           ← Back to Dashboard
         </Link>
       </div>
