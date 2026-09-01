@@ -1,1 +1,157 @@
-[{"id":"u1-q1","question":"Which layer is responsible for routing packets across networks?","options":["Network","Data Link","Physical","Application"],"answer":0,"explanation":"The network layer uses logical addressing and routing to move packets between networks."},{"id":"u1-q2","question":"What does full duplex communication allow?","options":["Both directions at once","Only one direction ever","Broadcast only","No acknowledgments"],"answer":0,"explanation":"Full duplex links transmit and receive simultaneously."}]
+[
+  {
+    "question": "In a mesh topology with n devices, how many duplex-mode links are required?",
+    "options": ["n", "n - 1", "n(n - 1)/2", "n²"],
+    "answer": 2,
+    "explanation": "A fully connected mesh needs a dedicated point-to-point link between every pair of devices, giving n(n - 1)/2 links."
+  },
+  {
+    "question": "Which topology becomes completely non-functional if its central hub fails?",
+    "options": ["Mesh", "Ring", "Star", "Bus"],
+    "answer": 2,
+    "explanation": "In a star topology every device connects only to the central hub, so a hub failure takes down the whole network — its one major weakness."
+  },
+  {
+    "question": "Which communication mode allows both devices to transmit and receive at the same time?",
+    "options": ["Simplex", "Half-duplex", "Full-duplex", "None of these"],
+    "answer": 2,
+    "explanation": "Full-duplex (like a telephone call) allows simultaneous two-way transmission, unlike half-duplex where devices take turns."
+  },
+  {
+    "question": "A LAN, as described in the notes, is best characterized as:",
+    "options": [
+      "A privately owned network within a single office, building, or campus",
+      "A network that always spans multiple cities",
+      "A network that requires a telephone exchange line",
+      "A network limited to exactly two devices"
+    ],
+    "answer": 0,
+    "explanation": "LANs are usually privately owned and connect hosts within a single office, building, or campus, offering high speed and security at low cost."
+  },
+  {
+    "question": "Which network type is typically used to connect banks or college campuses within a single city?",
+    "options": ["PAN", "LAN", "MAN", "WAN"],
+    "answer": 2,
+    "explanation": "A Metropolitan Area Network (MAN) covers towns/cities (around 50 km) and is used for applications like inter-bank communication within a city."
+  },
+  {
+    "question": "In circuit switching, which statement about efficiency and delay is correct?",
+    "options": [
+      "High efficiency, high delay",
+      "Low efficiency, low delay",
+      "High efficiency, low delay",
+      "Low efficiency, high delay"
+    ],
+    "answer": 1,
+    "explanation": "Circuit switching dedicates resources for the entire connection duration, which is inefficient when idle, but because resources are pre-reserved, transmission delay is minimal."
+  },
+  {
+    "question": "Which switching technique is also known as connectionless switching?",
+    "options": ["Circuit switching", "Datagram packet switching", "Virtual circuit switching", "Message switching"],
+    "answer": 1,
+    "explanation": "In datagram packet switching, each packet is treated as an independent entity with no fixed path — hence 'connectionless.'"
+  },
+  {
+    "question": "Which OSI layer is responsible for translation, compression, and encryption?",
+    "options": ["Session Layer", "Presentation Layer", "Transport Layer", "Application Layer"],
+    "answer": 1,
+    "explanation": "The Presentation layer handles translation, compression, and encryption of data between systems."
+  },
+  {
+    "question": "Which OSI layer is responsible for delivering individual packets from source host to destination host?",
+    "options": ["Data Link Layer", "Transport Layer", "Network Layer", "Physical Layer"],
+    "answer": 2,
+    "explanation": "The Network layer is responsible for the delivery of individual packets from the source host to the destination host."
+  },
+  {
+    "question": "How many layers does the TCP/IP protocol suite have when compared against the OSI model?",
+    "options": ["Four", "Five", "Six", "Seven"],
+    "answer": 1,
+    "explanation": "Although originally defined with four layers (host-to-network, internet, transport, application), TCP/IP is commonly compared to OSI as having five layers: physical, data link, network, transport, and application."
+  },
+  {
+    "question": "Which formula correctly gives total latency in a network link?",
+    "options": [
+      "Latency = Propagation delay + Transmission delay",
+      "Latency = Propagation delay + Transmission delay + Queueing time + Processing time",
+      "Latency = Bandwidth × Distance",
+      "Latency = Transmission delay − Propagation delay"
+    ],
+    "answer": 1,
+    "explanation": "Total latency includes propagation delay, transmission delay, queueing time, and processing time."
+  },
+  {
+    "question": "Which guided transmission medium offers the least signal attenuation and immunity to electromagnetic interference?",
+    "options": ["Twisted-pair cable", "Coaxial cable", "Fiber-optic cable", "Shielded twisted pair"],
+    "answer": 2,
+    "explanation": "Fiber-optic cable has less signal attenuation and is immune to electromagnetic interference, though it's more expensive and fragile than copper media."
+  },
+  {
+    "question": "Among unguided media, which offers the highest security and requires no government license?",
+    "options": ["Radio waves", "Microwaves", "Infrared waves", "All offer equal security"],
+    "answer": 2,
+    "explanation": "Per the comparison table, infrared waves offer high security, cannot penetrate solid objects (limiting interception), and need no government license to use."
+  },
+  {
+    "question": "Which topology combines characteristics of two or more different topologies?",
+    "options": ["Ring", "Hybrid", "Bus", "Star"],
+    "answer": 1,
+    "explanation": "A hybrid topology mixes two or more basic topologies (e.g. star-bus, star-ring) to combine their advantages."
+  },
+  {
+    "question": "In a bus topology, what happens if the main backbone cable breaks?",
+    "options": [
+      "Only devices before the break are affected",
+      "The entire network goes down",
+      "Nothing changes, all devices still communicate",
+      "Only the device closest to the break is affected"
+    ],
+    "answer": 1,
+    "explanation": "A bus topology relies on a single shared backbone cable; a break anywhere on it disrupts communication for the entire network."
+  },
+  {
+    "question": "Which of these is a common example of a Personal Area Network (PAN)?",
+    "options": ["A campus Wi-Fi network", "Bluetooth connection between a phone and headphones", "A city-wide fiber network", "The internet backbone"],
+    "answer": 1,
+    "explanation": "PANs connect devices within a very short range around a single person, such as a phone paired with Bluetooth headphones."
+  },
+  {
+    "question": "Which is an example of simplex communication?",
+    "options": ["A phone call", "A walkie-talkie conversation", "Data flowing from keyboard to computer", "A video conference"],
+    "answer": 2,
+    "explanation": "Simplex communication only flows in one direction — like a keyboard sending input to a computer, with no data returning the same path."
+  },
+  {
+    "question": "In message switching, how is data forwarded through intermediate nodes?",
+    "options": [
+      "The entire message is stored at each node before being forwarded (store-and-forward)",
+      "Only a dedicated circuit is reserved end-to-end",
+      "Each byte is sent independently in real time",
+      "Messages are never stored, only relayed instantly"
+    ],
+    "answer": 0,
+    "explanation": "Message switching uses a store-and-forward approach: each intermediate node receives the full message, stores it, and forwards it on to the next node."
+  },
+  {
+    "question": "What best defines 'bandwidth' in networking?",
+    "options": [
+      "The physical length of a cable",
+      "The maximum rate of data transfer across a given path",
+      "The number of devices connected to a network",
+      "The delay before a signal starts moving"
+    ],
+    "answer": 1,
+    "explanation": "Bandwidth refers to the maximum rate at which data can be transferred over a network path, usually measured in bits per second."
+  },
+  {
+    "question": "Which best distinguishes a collision domain from a broadcast domain?",
+    "options": [
+      "They are exactly the same thing",
+      "A collision domain is where frames may collide; a broadcast domain is where a broadcast frame reaches all devices",
+      "A broadcast domain only exists in wireless networks",
+      "A collision domain only applies to fiber-optic cables"
+    ],
+    "answer": 1,
+    "explanation": "A collision domain is a segment where simultaneous transmissions can collide; a broadcast domain is the extent to which a broadcast frame is propagated — devices like switches separate collision domains but not broadcast domains."
+  }
+]
