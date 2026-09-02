@@ -55,7 +55,7 @@ export default function ProgressPage() {
         </p>
       </div>
 
-      {/* Status line — one compact readout instead of three repeated stat cards */}
+      {/* Status line - one compact readout instead of three repeated stat cards */}
       <div
         className="mono flex flex-wrap items-center gap-x-8 gap-y-2 px-6 py-4 rounded-lg text-sm"
         style={{ background: "var(--bg-dark)", color: "rgba(255,255,255,0.85)" }}
@@ -114,11 +114,11 @@ export default function ProgressPage() {
                       </span>
                     </div>
                   ) : (
-                    <span style={{ color: "var(--text-secondary)" }}>—</span>
+                    <span style={{ color: "var(--text-secondary)" }}>-</span>
                   )}
                 </td>
-                <td>{stat.attempts || "—"}</td>
-                <td>{stat.latest > 0 ? `${stat.latest}%` : "—"}</td>
+                    <td>{stat.attempts || "-"}</td>
+                    <td>{stat.latest > 0 ? `${stat.latest}%` : "-"}</td>
               </tr>
             ))}
           </tbody>

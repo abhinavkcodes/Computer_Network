@@ -29,8 +29,8 @@ const PRESETS: Record<Mode, { label: string; ip: string; prefix: number; hosts?:
 };
 
 const FIELD_HELP: Record<string, string> = {
-  network: "The first address in the block — identifies the subnet itself, not assignable to a device.",
-  broadcast: "The last address in the block — reserved for sending to every device on the subnet.",
+  network: "The first address in the block - identifies the subnet itself, not assignable to a device.",
+  broadcast: "The last address in the block - reserved for sending to every device on the subnet.",
   firstHost: "The first address devices can actually use.",
   lastHost: "The last address devices can actually use.",
 };
@@ -314,7 +314,7 @@ export function SubnetCalculator() {
         {mode === "vlsm" && !err && rows.length > 1 && (
           <p className="mt-5 text-xs flex items-start gap-1.5" style={{ color: "var(--text-secondary)" }}>
             <Info size={13} className="mt-0.5 flex-shrink-0" />
-            Largest host requirement is allocated first to use address space efficiently — subnets below are in allocation order, not input order.
+            Largest host requirement is allocated first to use address space efficiently - subnets below are in allocation order, not input order.
           </p>
         )}
 

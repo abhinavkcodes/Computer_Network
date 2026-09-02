@@ -33,7 +33,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside
         className="fixed left-0 top-0 h-screen w-64 border-r flex flex-col transition-colors"
-        style={{ background: "var(--bg-dark)", borderColor: "rgba(255,255,255,0.08)" }}
+        style={{ background: "var(--sidebar-bg)", borderColor: "rgba(255,255,255,0.08)" }}
       >
         {/* Logo */}
         <div className="px-6 py-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
@@ -58,13 +58,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 href={item.href}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors"
                 style={{
-                  background: active ? "rgba(46,168,150,0.12)" : "transparent",
+                  background: active ? "var(--sidebar-active)" : "transparent",
                   color: active ? "white" : "rgba(255,255,255,0.65)",
-                  borderLeft: active ? "2px solid var(--accent)" : "2px solid transparent",
+                  borderLeft: active ? "2px solid var(--sidebar-accent)" : "2px solid transparent",
                 }}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    e.currentTarget.style.background = "var(--bg-dark-hover)";
+                    e.currentTarget.style.background = "var(--sidebar-hover)";
                     e.currentTarget.style.color = "white";
                   }
                 }}
@@ -77,7 +77,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               >
                 <span
                   className="mono text-[11px] w-5 flex-shrink-0"
-                  style={{ color: active ? "var(--accent)" : "rgba(255,255,255,0.35)" }}
+                  style={{ color: active ? "var(--sidebar-accent)" : "rgba(255,255,255,0.35)" }}
                 >
                   {item.tag}
                 </span>
@@ -95,7 +95,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors"
             style={{ color: "rgba(255,255,255,0.65)" }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = "var(--bg-dark-hover)";
+              e.currentTarget.style.background = "var(--sidebar-hover)";
               e.currentTarget.style.color = "white";
             }}
             onMouseLeave={(e) => {

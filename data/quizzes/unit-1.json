@@ -9,7 +9,7 @@
     "question": "Which topology becomes completely non-functional if its central hub fails?",
     "options": ["Mesh", "Ring", "Star", "Bus"],
     "answer": 2,
-    "explanation": "In a star topology every device connects only to the central hub, so a hub failure takes down the whole network — its one major weakness."
+    "explanation": "In a star topology every device connects only to the central hub, so a hub failure takes down the whole network - its one major weakness."
   },
   {
     "question": "Which communication mode allows both devices to transmit and receive at the same time?",
@@ -49,7 +49,7 @@
     "question": "Which switching technique is also known as connectionless switching?",
     "options": ["Circuit switching", "Datagram packet switching", "Virtual circuit switching", "Message switching"],
     "answer": 1,
-    "explanation": "In datagram packet switching, each packet is treated as an independent entity with no fixed path — hence 'connectionless.'"
+    "explanation": "In datagram packet switching, each packet is treated as an independent entity with no fixed path - hence 'connectionless.'"
   },
   {
     "question": "Which OSI layer is responsible for translation, compression, and encryption?",
@@ -119,7 +119,7 @@
     "question": "Which is an example of simplex communication?",
     "options": ["A phone call", "A walkie-talkie conversation", "Data flowing from keyboard to computer", "A video conference"],
     "answer": 2,
-    "explanation": "Simplex communication only flows in one direction — like a keyboard sending input to a computer, with no data returning the same path."
+    "explanation": "Simplex communication only flows in one direction - like a keyboard sending input to a computer, with no data returning the same path."
   },
   {
     "question": "In message switching, how is data forwarded through intermediate nodes?",
@@ -152,6 +152,6 @@
       "A collision domain only applies to fiber-optic cables"
     ],
     "answer": 1,
-    "explanation": "A collision domain is a segment where simultaneous transmissions can collide; a broadcast domain is the extent to which a broadcast frame is propagated — devices like switches separate collision domains but not broadcast domains."
+    "explanation": "A collision domain is a segment where simultaneous transmissions can collide; a broadcast domain is the extent to which a broadcast frame is propagated - devices like switches separate collision domains but not broadcast domains."
   }
 ]

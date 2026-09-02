@@ -30,7 +30,7 @@ const hops = [
     host: "calc",
     title: "Calculator",
     detail: "CIDR + VLSM, step by step",
-    body: "Work the subnet math yourself, then check it — every octet-by-octet AND operation shown, not just the answer.",
+    body: "Work the subnet math yourself, then check it - every octet-by-octet AND operation shown, not just the answer.",
     href: "/calculator",
   },
 ];
@@ -52,11 +52,11 @@ export default function Home() {
             className="text-4xl sm:text-5xl font-bold leading-[1.08]"
             style={{ color: "var(--text-primary)" }}
           >
-            Networking makes more sense once you've routed through it yourself.
+            Built around how Computer Networks is actually examined
           </h1>
           <p className="mt-5 text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             This lab covers all five units with notes to read, questions to
-            test yourself against, and a calculator that shows its work —
+            test yourself against, and a calculator that shows its work -
             built for the way this course is actually examined.
           </p>
           <Link
@@ -69,7 +69,7 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Traceroute panel — the one deliberate signature element */}
+        {/* Traceroute panel - the one deliberate signature element */}
         <div className="lg:col-span-2 rounded-lg overflow-hidden" style={{ background: "var(--bg-dark)" }}>
           <div
             className="px-4 py-2.5 flex items-center gap-1.5"
@@ -108,7 +108,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Hops as tools — numbering justified because these ARE the 3 hops above */}
+      {/* Hops as tools - numbering justified because these ARE the 3 hops above */}
       <div className="grid md:grid-cols-3 gap-px" style={{ background: "var(--border)" }}>
         {hops.map((h) => (
           <Link

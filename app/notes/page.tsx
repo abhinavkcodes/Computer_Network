@@ -42,7 +42,7 @@ export default function Notes() {
       document.exitFullscreen();
     } else {
       viewerRef.current.requestFullscreen().catch(() => {
-        // Fullscreen API can be blocked by browser settings/permissions —
+            // Fullscreen API can be blocked by browser settings/permissions -
         // fail silently rather than throwing an unhandled error.
       });
     }

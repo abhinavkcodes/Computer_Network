@@ -3,7 +3,7 @@
     "question": "In classful IPv4 addressing, which class is intended for very large organizations and starts with binary '0'?",
     "options": ["Class A", "Class B", "Class C", "Class D"],
     "answer": 0,
-    "explanation": "Class A addresses begin with a leading bit of 0, reserving the first octet for the network ID and the remaining three for hosts — suited to very large networks."
+    "explanation": "Class A addresses begin with a leading bit of 0, reserving the first octet for the network ID and the remaining three for hosts - suited to very large networks."
   },
   {
     "question": "Which IPv4 class is reserved for multicasting?",
@@ -21,7 +21,7 @@
     "question": "For the address 192.168.60.55/20, what is the Network ID?",
     "options": ["192.168.48.0", "192.168.32.0", "192.168.60.0", "192.168.0.0"],
     "answer": 0,
-    "explanation": "With a /20 mask, the third octet (60) is ANDed against 240, giving 48 — so the Network ID is 192.168.48.0, as worked through in the notes."
+    "explanation": "With a /20 mask, the third octet (60) is ANDed against 240, giving 48 - so the Network ID is 192.168.48.0, as worked through in the notes."
   },
   {
     "question": "For the address 192.168.60.55/20, what is the Broadcast ID?",
@@ -55,7 +55,7 @@
       "All networks must belong to different IP classes"
     ],
     "answer": 3,
-    "explanation": "Supernetting requires equal-size (same mask) contiguous blocks combined in powers of 2 — it does not require networks to be from different classes; in fact they're typically combined within the same class range."
+    "explanation": "Supernetting requires equal-size (same mask) contiguous blocks combined in powers of 2 - it does not require networks to be from different classes; in fact they're typically combined within the same class range."
   },
   {
     "question": "What is the primary purpose of NAT (Network Address Translation)?",
@@ -78,7 +78,7 @@
     "question": "Which device operates at a higher layer and can filter traffic based on MAC addresses, dividing a network into separate collision domains?",
     "options": ["Hub", "Repeater", "Bridge", "None of these"],
     "answer": 2,
-    "explanation": "A bridge examines MAC addresses to decide whether to forward frames between segments, effectively separating collision domains — unlike a hub, which just broadcasts to all ports."
+    "explanation": "A bridge examines MAC addresses to decide whether to forward frames between segments, effectively separating collision domains - unlike a hub, which just broadcasts to all ports."
   },
   {
     "question": "What is a key benefit of configuring VLANs on a switch?",

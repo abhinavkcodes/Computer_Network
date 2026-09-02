@@ -8,7 +8,7 @@ export default function Quiz({ params }: { params: { unit: string } }) {
           {params.unit === "mixed" ? "Mixed Practice Quiz" : `Unit ${params.unit} Quiz`}
         </h1>
         <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-          Answer at your own pace — press 1–4 to pick, Enter to move on.
+          Answer at your own pace - press 1–4 to pick, Enter to move on.
         </p>
       </div>
       <QuizRunner unit={params.unit} />
