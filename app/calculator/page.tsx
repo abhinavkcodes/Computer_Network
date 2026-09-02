@@ -9,7 +9,7 @@ export default function CalculatorPage() {
           Subnet Calculator
         </h1>
         <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-          Work out CIDR notation, subnet masks, and VLSM allocation — with the
+          Work out CIDR notation, subnet masks, and VLSM allocation - with the
           math shown, not just the answer.
         </p>
       </div>
