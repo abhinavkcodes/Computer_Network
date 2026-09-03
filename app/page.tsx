@@ -23,7 +23,7 @@ const hops = [
     title: "Quizzes",
     detail: `${TOTAL_QUESTIONS} practice questions`,
     body: "Unit-wise and mixed sets with instant feedback, a live streak, and a review of exactly what you missed.",
-    href: "/quiz/mixed",
+    href: "/quiz",
   },
   {
     n: 3,

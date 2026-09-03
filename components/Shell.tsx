@@ -1,13 +1,12 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
   Bell,
   ChevronDown,
   ChevronUp,
-  History,
   MessageSquarePlus,
   LogOut,
   Moon,
@@ -20,18 +19,18 @@ import {
 } from "lucide-react";
 import { useProgress } from "@/lib/progressStore";
 import { FeedbackModal } from "@/components/FeedbackModal";
+import { UserAvatar } from "@/components/UserAvatar";
 
 const studentNavItems = [
   { href: "/", label: "Learning home", icon: BookOpen },
-  { href: "/progress", label: "My progress", icon: BarChart3 },
   { href: "/notes", label: "Study notes", icon: BookOpen },
-  { href: "/quiz/mixed", label: "Practice quizzes", icon: ClipboardList },
+  { href: "/quiz", label: "Practice quizzes", icon: ClipboardList },
   { href: "/calculator", label: "Subnet calculator", icon: Calculator },
 ];
 
 const facultyNavItems = [
   { href: "/admin", label: "Faculty overview", icon: BarChart3 },
-  { href: "/admin", label: "Student roster", icon: Users },
+  { href: "/admin#students", label: "Student roster", icon: Users },
   { href: "/notes", label: "Course materials", icon: BookOpen },
 ];
 
@@ -39,17 +38,25 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useProgress();
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
+  const [hash, setHash] = useState("");
   const [user, setUser] = useState<{ email?: string; name?: string; image?: string; role: "student" | "faculty" } | null>(null);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [announcements, setAnnouncements] = useState<{ id: string; title: string; body: string; created_at: string }[]>([]);
   const [showAnnouncements, setShowAnnouncements] = useState(false);
-  const [imageFailed, setImageFailed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const lastRecordedPath = useRef<string | null>(null);
 
   useEffect(() => {
     setIsDark(theme === "dark");
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
+
+  useEffect(() => {
+    const updateHash = () => setHash(window.location.hash);
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, []);
 
   useEffect(() => {
     const supabase = createClient();
@@ -77,7 +84,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   }, [pathname]);
 
   useEffect(() => {
-    if (!user || pathname === "/login") return;
+    if (!user || pathname === "/login" || lastRecordedPath.current === pathname) return;
+    lastRecordedPath.current = pathname;
     void fetch("/api/analytics/visit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -87,7 +95,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   const isActive = (href: string) => {
     if (href === "/" && pathname === "/") return true;
-    if (href !== "/" && pathname.startsWith(href)) return true;
+    const path = href.split("#")[0];
+    if (path !== "/" && pathname === path) {
+      return href.includes("#") ? hash === href.slice(href.indexOf("#")) : !hash || path !== "/admin";
+    }
     return false;
   };
 
@@ -125,7 +136,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             const Icon = item.icon;
             return (
               <Link
-                key={item.href}
+                key={`${item.href}-${item.label}`}
                 href={item.href}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors"
                 style={{
@@ -155,7 +166,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <div className="mt-8 px-3 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>
             Connect
           </div>
-          <button
+          {user?.role === "faculty" ? <Link
+            href="/admin/announcements"
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors"
+            style={{ color: "rgba(255,255,255,0.65)" }}
+          >
+            <Bell size={17} strokeWidth={1.7} />
+            Announcements
+          </Link> : <button
             type="button"
             className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors"
             style={{ color: "rgba(255,255,255,0.65)" }}
@@ -174,8 +192,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <span className="ml-auto rounded border px-2 py-0.5 text-xs" style={{ borderColor: "rgba(255,255,255,0.15)", color: "white" }}>
               {announcements.length}
             </span>
-          </button>
-          {showAnnouncements && (
+          </button>}
+          {user?.role !== "faculty" && showAnnouncements && (
             <div className="mt-2 space-y-2 rounded-lg border p-2" style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.16)" }}>
               {announcements.length > 0 ? announcements.slice(0, 5).map((announcement) => (
                 <article key={announcement.id} className="rounded px-2 py-2" style={{ background: "rgba(255,255,255,0.05)" }}>
@@ -197,17 +215,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 style={{ borderColor: "rgba(255,255,255,0.14)", background: "rgba(255,255,255,0.05)" }}
                 onClick={() => setIsAccountOpen((open) => !open)}
               >
-                {user.image && !imageFailed ? (
-                  <img src={user.image} alt="" referrerPolicy="no-referrer" onError={() => setImageFailed(true)} className="h-9 w-9 rounded-full object-cover" />
-                ) : (
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-slate-900">
-                    {(user.name ?? "U").charAt(0).toUpperCase()}
-                  </span>
-                )}
+                <UserAvatar src={user.image} name={user.name} className="h-9 w-9 bg-white text-slate-900" />
                 <span className="min-w-0 flex-1">
                   <span className="flex min-w-0 items-center gap-1.5 text-sm font-semibold text-white">
                     <span className="min-w-0 truncate">{user.name ?? "Network learner"}</span>
-                    <span className="shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-normal" style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)" }}>
+                    <span className="shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold" style={user.role === "faculty" ? { borderColor: "#e0a458", background: "rgba(224,164,88,0.18)", color: "#f4c27d" } : { borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)" }}>
                       {user.role === "faculty" ? "Faculty" : "Student"}
                     </span>
                   </span>
@@ -220,10 +232,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   <button type="button" className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm" style={{ color: "rgba(255,255,255,0.8)" }} onClick={() => setShowFeedback(true)}>
                     <MessageSquarePlus size={16} />
                     Feedback
-                  </button>
-                  <button type="button" className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm" style={{ color: "rgba(255,255,255,0.8)" }}>
-                    <History size={16} />
-                    Changelog
                   </button>
                 </div>
               )}
