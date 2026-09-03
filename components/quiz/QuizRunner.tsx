@@ -54,11 +54,17 @@ export function QuizRunner({ unit }: { unit: string }) {
   const next = () => {
     if (!revealed) return;
     if (i === qs.length - 1) {
+      const finalScore = score + (picked === q.answer ? 1 : 0);
       add({
         unit,
-        score: score,
+        score: finalScore,
         total: qs.length,
         at: new Date().toISOString(),
+      });
+      void fetch("/api/analytics/attempt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ unit, score: finalScore, total: qs.length, at: new Date().toISOString() }),
       });
       setDone(true);
     } else {
