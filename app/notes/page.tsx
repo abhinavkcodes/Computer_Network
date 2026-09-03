@@ -13,7 +13,7 @@ export default function Notes() {
   // page (both width and height) inside the visible area, so page 1 is
   // fully visible without needing to scroll. #zoom=page-width only fit
   // the width, which is why the page was taller than the box before.
-  const rawSrc = `/notes/unit-${u}.pdf`;
+  const rawSrc = `/notes/Unit-${u}.pdf`;
   const viewSrc = `${rawSrc}#view=Fit`;
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function Notes() {
   const idx = units.indexOf(u);
 
   return (
-    <div className="space-y-5">
+    <div className="-mt-5 space-y-2 lg:h-[calc(100vh-4.5rem)] lg:overflow-hidden">
       {/* Header */}
       <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
@@ -63,14 +63,14 @@ export default function Notes() {
           </p>
         </div>
         <p className="mono text-xs" style={{ color: "var(--text-secondary)" }}>
-          Use ← → to switch units
+            {units.length} units available · Use ← → to switch
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-4 lg:h-[calc(100%-4rem)] lg:grid-cols-4">
         {/* Unit Selector */}
         <aside className="lg:col-span-1">
-          <div className="lg:sticky lg:top-6 space-y-3">
+          <div className="space-y-3 lg:sticky lg:top-0">
             <h2 className="mono text-xs font-medium uppercase tracking-[0.12em]" style={{ color: "var(--text-secondary)" }}>
               Units
             </h2>
@@ -87,7 +87,7 @@ export default function Notes() {
                     border: u === n ? "1px solid var(--accent)" : "1px solid var(--border)",
                   }}
                 >
-                  Unit {n}
+                  <span className="flex items-center justify-between gap-3"><span>Unit {n}</span><span className="mono text-[10px]" style={{ color: u === n ? "rgba(255,255,255,0.65)" : "var(--text-secondary)" }}>PDF</span></span>
                 </button>
               ))}
             </div>
@@ -127,10 +127,10 @@ export default function Notes() {
         </aside>
 
         {/* PDF Viewer */}
-        <div className="lg:col-span-3 card overflow-hidden animate-in" key={u}>
+        <div className="card animate-in overflow-hidden lg:col-span-3" key={u}>
           <div className="px-6 py-3.5 border-b flex items-center justify-between gap-3" style={{ background: "var(--bg-light)", borderColor: "var(--border)" }}>
             <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>
-              Unit {u} Notes
+              <span>Unit {u} Notes</span>
             </h2>
             <div className="flex items-center gap-3">
               <span className="mono text-xs hidden sm:inline" style={{ color: "var(--text-secondary)" }}>
@@ -148,7 +148,7 @@ export default function Notes() {
             </div>
           </div>
 
-          <div ref={viewerRef} className="relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 220px)", minHeight: isFullscreen ? undefined : "480px", background: "var(--bg-card)" }}>
+          <div ref={viewerRef} className="relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 140px)", minHeight: isFullscreen ? undefined : "420px", background: "var(--bg-card)" }}>
             {!loaded && (
               <div className="absolute inset-0 flex items-center justify-center" style={{ background: "var(--bg-card)" }}>
                 <div className="text-center">
@@ -156,7 +156,7 @@ export default function Notes() {
                     className="mx-auto w-8 h-8 rounded-full border-2 animate-spin"
                     style={{ borderColor: "var(--border)", borderTopColor: "var(--accent)" }}
                   />
-                  <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>Loading Unit {u}...</p>
+                  <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>Opening Unit {u} notes...</p>
                 </div>
               </div>
             )}
@@ -174,7 +174,7 @@ export default function Notes() {
                 <p className="mt-1 text-sm max-w-sm">
                   The file may not be present yet, or your browser can't preview PDFs inline.
                   Make sure it's placed at{" "}
-                  <code className="mono" style={{ color: "var(--accent)" }}>public/notes/unit-{u}.pdf</code>
+                  <code className="mono" style={{ color: "var(--accent)" }}>public/notes/Unit-{u}.pdf</code>
                 </p>
                 <a href={rawSrc} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5">
                   <ExternalLink size={14} />
