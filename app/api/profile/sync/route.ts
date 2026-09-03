@@ -4,8 +4,8 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 
 function facultyEmails() {
   return (process.env.FACULTY_EMAILS ?? "")
-    .split(",")
-    .map((email) => email.trim().toLowerCase())
+    .split(/[;,\n]/)
+    .map((email) => email.trim().replace(/^['"]|['"]$/g, "").toLowerCase())
     .filter(Boolean);
 }
 
@@ -19,12 +19,20 @@ export async function POST() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } },
   );
-  const role = facultyEmails().includes(user.email.toLowerCase()) ? "faculty" : "student";
+  const normalizedEmail = user.email.trim().toLowerCase();
+  const { data: existingProfile } = await admin
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+  const role = facultyEmails().includes(normalizedEmail) || existingProfile?.role === "faculty"
+    ? "faculty"
+    : "student";
   const { data: profile, error } = await admin
     .from("profiles")
     .upsert({
       id: user.id,
-      email: user.email,
+      email: normalizedEmail,
       full_name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? "Student",
       avatar_url: user.user_metadata?.avatar_url ?? user.user_metadata?.picture ?? null,
       role,
