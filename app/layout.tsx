@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { Shell } from "@/components/Shell";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -38,7 +39,9 @@ export default function RootLayout({
       className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <body>
-        <Shell>{children}</Shell>
+        <AuthProvider>
+          <Shell>{children}</Shell>
+        </AuthProvider>
       </body>
     </html>
   );
