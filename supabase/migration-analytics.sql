@@ -21,6 +21,13 @@ create table if not exists public.announcements (
   created_at timestamptz not null default now()
 );
 
+grant usage on schema public to anon, authenticated, service_role;
+grant select, insert, update on public.profiles to authenticated, service_role;
+grant select, insert on public.quiz_attempts to authenticated, service_role;
+grant select, insert on public.announcements to authenticated, service_role;
+grant select, insert on public.feedback to authenticated, service_role;
+grant select, insert on public.site_visits to authenticated, service_role;
+
 alter table public.site_visits enable row level security;
 alter table public.feedback enable row level security;
 alter table public.announcements enable row level security;

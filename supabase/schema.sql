@@ -39,6 +39,18 @@ create table public.site_visits (
   visited_at timestamptz not null default now()
 );
 
+grant usage on schema public to anon, authenticated, service_role;
+grant select, insert, update on public.profiles to authenticated;
+grant select, insert, update on public.profiles to service_role;
+grant select, insert on public.quiz_attempts to authenticated;
+grant select, insert on public.quiz_attempts to service_role;
+grant select, insert on public.announcements to authenticated;
+grant select, insert on public.announcements to service_role;
+grant select, insert on public.feedback to authenticated;
+grant select, insert on public.feedback to service_role;
+grant select, insert on public.site_visits to authenticated;
+grant select, insert on public.site_visits to service_role;
+
 alter table public.profiles enable row level security;
 alter table public.quiz_attempts enable row level security;
 alter table public.announcements enable row level security;
