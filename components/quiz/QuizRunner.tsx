@@ -24,8 +24,14 @@ export function QuizRunner({ unit }: { unit: string }) {
   const [picked, setPicked] = useState<number | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showReview, setShowReview] = useState(false);
+  const [managedQuestions, setManagedQuestions] = useState<any[]>([]);
 
-  const q: any = qs[i];
+  useEffect(() => {
+    void fetch(`/api/quiz-questions?unit=${unit}`).then((response) => response.ok ? response.json() : []).then((questions) => setManagedQuestions(unit === "mixed" ? questions : questions.filter((question: any) => question.unit === unit))).catch(() => setManagedQuestions([]));
+  }, [unit]);
+
+  const allQuestions = useMemo(() => [...qs, ...managedQuestions], [managedQuestions, qs]);
+  const q: any = allQuestions[i];
   const revealed = picked !== null;
 
   const choose = (n: number) => {
@@ -50,18 +56,18 @@ export function QuizRunner({ unit }: { unit: string }) {
 
   const next = () => {
     if (!revealed) return;
-    if (i === qs.length - 1) {
+    if (i === allQuestions.length - 1) {
       const finalScore = score + (picked === q.answer ? 1 : 0);
       add({
         unit,
         score: finalScore,
-        total: qs.length,
+        total: allQuestions.length,
         at: new Date().toISOString(),
       });
       void fetch("/api/analytics/attempt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ unit, score: finalScore, total: qs.length, at: new Date().toISOString() }),
+        body: JSON.stringify({ unit, score: finalScore, total: allQuestions.length, at: new Date().toISOString() }),
       });
       setDone(true);
     } else {
@@ -100,7 +106,7 @@ export function QuizRunner({ unit }: { unit: string }) {
   if (!q && !done) return <p style={{ color: "var(--text-secondary)" }}>No quiz found.</p>;
 
   if (done) {
-    const pct = Math.round((score / qs.length) * 100);
+    const pct = Math.round((score / allQuestions.length) * 100);
     const wrongAnswers = answers.filter((a) => !a.isCorrect);
     const tier = pct >= 90 ? "Excellent" : pct >= 70 ? "Good work" : pct >= 50 ? "Keep practicing" : "Review the notes";
 
@@ -153,7 +159,7 @@ export function QuizRunner({ unit }: { unit: string }) {
             {tier}
           </p>
           <h2 className="mt-4 text-5xl font-bold" style={{ color: "var(--text-primary)" }}>
-            {score}/{qs.length}
+            {score}/{allQuestions.length}
           </h2>
           <p className="mt-2 text-lg" style={{ color: "var(--text-secondary)" }}>{pct}%</p>
 
@@ -191,7 +197,7 @@ export function QuizRunner({ unit }: { unit: string }) {
       <div className="card p-4">
         <div className="mb-3 flex items-center justify-between">
           <span className="mono text-xs" style={{ color: "var(--text-secondary)" }}>
-            Question {i + 1} of {qs.length}
+            Question {i + 1} of {allQuestions.length}
           </span>
           <div className="flex items-center gap-3">
             {streak >= 2 && (
@@ -205,7 +211,7 @@ export function QuizRunner({ unit }: { unit: string }) {
           </div>
         </div>
         <div className="flex gap-1">
-          {qs.map((_: any, idx: number) => {
+          {allQuestions.map((_: any, idx: number) => {
             const answered = answers[idx];
             let bg = "var(--border)";
             if (idx < i) bg = answered?.isCorrect ? "var(--accent)" : "#c86a63";
@@ -299,7 +305,7 @@ export function QuizRunner({ unit }: { unit: string }) {
 
         <div className="sticky bottom-3 z-10 mt-8 flex items-center gap-3 border-t pt-4" style={{ borderColor: "var(--border)", background: "color-mix(in srgb, var(--bg-card) 92%, transparent)" }}>
           <button type="button" onClick={next} disabled={!revealed} className="btn btn-primary flex-1 py-2.5">
-            {i === qs.length - 1 ? "Finish Quiz" : "Next Question"}
+            {i === allQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
             {revealed && <span className="mono text-xs opacity-60 ml-2">(Enter ↵)</span>}
           </button>
           {!revealed && <span className="hidden text-xs sm:block" style={{ color: "var(--text-secondary)" }}>Select an answer first</span>}
