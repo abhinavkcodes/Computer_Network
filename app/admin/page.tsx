@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { StudentProfileModal } from "@/components/admin/StudentProfileModal";
 import { UserAvatar } from "@/components/UserAvatar";
+import { StudentDirectory } from "@/components/admin/StudentDirectory";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 
 export default async function AdminPage({
   searchParams,
@@ -16,12 +17,23 @@ export default async function AdminPage({
     redirect("/");
   }
 
-  const { data: profilesData } = await supabase.from("profiles").select("id, email, full_name, avatar_url, created_at, last_seen, role").order("last_seen", { ascending: false });
+  const { data: profilesData } = await supabase.from("profiles").select("id, email, full_name, registration_number, avatar_url, created_at, last_seen, role").order("last_seen", { ascending: false });
   const { data: attemptsData } = await supabase.from("quiz_attempts").select("id, user_id, unit, score, total, completed_at, profiles(email, full_name)").order("completed_at", { ascending: false });
   const { data: visitsData } = await supabase.from("site_visits").select("id, user_id, path, visited_at").order("visited_at", { ascending: false });
   const { count: feedbackCount } = await supabase.from("feedback").select("id", { count: "exact", head: true });
   const { data: feedbackData } = await supabase.from("feedback").select("id, user_id, message, created_at, profiles(full_name, email, avatar_url)").order("created_at", { ascending: false });
-  const profiles = profilesData ?? [];
+  const admin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { autoRefreshToken: false, persistSession: false } });
+  const { data: authUsersData } = await admin.auth.admin.listUsers({ perPage: 1000 });
+  const authUsers = authUsersData?.users ?? [];
+  const authById = new Map(authUsers.map((authUser) => [authUser.id, authUser]));
+  const profiles = (profilesData ?? []).map((storedProfile: any) => {
+    const authUser = authById.get(storedProfile.id);
+    return {
+      ...storedProfile,
+      avatar_url: storedProfile.avatar_url ?? authUser?.user_metadata?.avatar_url ?? authUser?.user_metadata?.picture ?? null,
+      full_name: storedProfile.full_name !== "Student" ? storedProfile.full_name : authUser?.user_metadata?.full_name ?? authUser?.user_metadata?.name ?? storedProfile.full_name,
+    };
+  });
   const users = profiles.filter((profile: any) => profile.role === "student");
   const attempts = attemptsData ?? [];
   const visits = visitsData ?? [];
@@ -133,45 +145,7 @@ export default async function AdminPage({
         ) : <p className="p-6 text-sm" style={{ color: "var(--text-secondary)" }}>No feedback received yet.</p>}
       </section>
 
-      <section id="students" className="scroll-mt-6">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <p className="mono text-xs uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>Individual analysis</p>
-            <h2 className="mt-1 text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Students who have logged in</h2>
-          </div>
-          <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{studentRows.length} student{studentRows.length === 1 ? "" : "s"}</p>
-        </div>
-        {studentRows.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            {studentRows.map((student) => (
-              <article key={student.id} className="card overflow-hidden">
-                <div className="flex items-start justify-between gap-4 border-b p-5" style={{ borderColor: "var(--border)" }}>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-3">
-                      <UserAvatar src={student.avatar_url} name={student.full_name} className="h-10 w-10 shrink-0" />
-                      <h3 className="truncate text-lg font-semibold" style={{ color: "var(--text-primary)" }}>{student.full_name}</h3>
-                    </div>
-                    <p className="mt-1 truncate text-sm" style={{ color: "var(--text-secondary)" }}>{student.email}</p>
-                  </div>
-                  <span className="shrink-0 rounded-full px-2.5 py-1 text-xs font-medium" style={{ background: student.attempts ? "var(--accent-light)" : "var(--bg-light)", color: "var(--text-secondary)" }}>{student.attempts ? "Active learner" : "No quiz yet"}</span>
-                </div>
-                <div className="grid grid-cols-2 gap-px" style={{ background: "var(--border)" }}>
-                  {[["Page visits", student.visits], ["Unique pages", student.pages], ["Quiz attempts", student.attempts], ["Average score", student.attempts ? `${student.average}%` : "-"]].map(([label, value]) => <div key={label} className="p-4" style={{ background: "var(--bg-card)" }}><p className="mono text-[10px] uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>{label}</p><p className="mt-2 text-xl font-semibold" style={{ color: "var(--text-primary)" }}>{value}</p></div>)}
-                </div>
-                <div className="flex items-center justify-between gap-4 p-5">
-                  <div className="min-w-0 text-xs" style={{ color: "var(--text-secondary)" }}><p>Last activity</p><p className="mt-1 truncate font-medium" style={{ color: "var(--text-primary)" }}>{formatDate(student.lastActivity)}</p></div>
-                  <StudentProfileModal
-                    student={student}
-                    attempts={attempts.filter((attempt: any) => attempt.user_id === student.id)}
-                    visits={visits.filter((visit: any) => visit.user_id === student.id)}
-                    feedback={feedback.filter((item: any) => item.user_id === student.id)}
-                  />
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : <div className="card p-8 text-sm" style={{ color: "var(--text-secondary)" }}>No students have signed in yet.</div>}
-      </section>
+      <StudentDirectory students={studentRows} attempts={attempts} visits={visits} feedback={feedback} />
 
       {selectedStudent && (
         <section id="student-detail" className="card scroll-mt-6 overflow-hidden">
