@@ -2,6 +2,7 @@ create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null,
   full_name text not null default 'Student',
+  registration_number text,
   avatar_url text,
   role text not null default 'student' check (role in ('student', 'faculty')),
   created_at timestamptz not null default now(),
@@ -39,6 +40,17 @@ create table public.site_visits (
   visited_at timestamptz not null default now()
 );
 
+create table public.quiz_questions (
+  id uuid primary key default gen_random_uuid(),
+  unit text not null check (unit in ('1', '2')),
+  question text not null,
+  options jsonb not null,
+  answer integer not null check (answer >= 0 and answer < 4),
+  explanation text not null,
+  enabled boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
 grant usage on schema public to anon, authenticated, service_role;
 grant select, insert, update on public.profiles to authenticated;
 grant select, insert, update on public.profiles to service_role;
@@ -50,12 +62,14 @@ grant select, insert on public.feedback to authenticated;
 grant select, insert on public.feedback to service_role;
 grant select, insert on public.site_visits to authenticated;
 grant select, insert on public.site_visits to service_role;
+grant select, insert, update, delete on public.quiz_questions to authenticated, service_role;
 
 alter table public.profiles enable row level security;
 alter table public.quiz_attempts enable row level security;
 alter table public.announcements enable row level security;
 alter table public.feedback enable row level security;
 alter table public.site_visits enable row level security;
+alter table public.quiz_questions enable row level security;
 
 create or replace function public.is_faculty()
 returns boolean language sql security definer set search_path = public
@@ -73,6 +87,8 @@ create policy "Users can send feedback" on public.feedback for insert with check
 create policy "Faculty can read feedback" on public.feedback for select using (public.is_faculty());
 create policy "Users can record visits" on public.site_visits for insert with check (user_id = auth.uid());
 create policy "Faculty can read visits" on public.site_visits for select using (public.is_faculty());
+create policy "Authenticated users can read enabled quiz questions" on public.quiz_questions for select using (auth.uid() is not null and enabled = true);
+create policy "Faculty can manage quiz questions" on public.quiz_questions for all using (public.is_faculty()) with check (public.is_faculty());
 
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public
