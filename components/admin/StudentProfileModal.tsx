@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Clock3, FileText, Gauge, MousePointer2, X, type LucideIcon } from "lucide-react";
 import { UserAvatar } from "@/components/UserAvatar";
 
 type Student = {
   full_name: string;
   email: string;
+  registration_number?: string | null;
   avatar_url?: string | null;
   created_at: string;
   last_seen: string;
@@ -35,6 +36,12 @@ export function StudentProfileModal({
 }) {
   const [open, setOpen] = useState(false);
   const formatDate = (value: string) => new Date(value).toLocaleString();
+  const metrics: [LucideIcon, string, string | number][] = [
+    [Clock3, "Time on site", student.timeSpent],
+    [MousePointer2, "Page visits", student.visits],
+    [FileText, "Quiz attempts", student.attempts],
+    [Gauge, "Average score", student.attempts ? `${student.average}%` : "-"],
+  ];
 
   return (
     <>
@@ -45,12 +52,12 @@ export function StudentProfileModal({
             <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b p-6" style={{ borderColor: "var(--border)", background: "var(--bg-card)" }}>
               <div className="flex min-w-0 items-center gap-3">
                 <UserAvatar src={student.avatar_url} name={student.full_name} className="h-12 w-12 shrink-0" />
-                <div className="min-w-0"><h2 id="student-profile-title" className="truncate text-xl font-bold" style={{ color: "var(--text-primary)" }}>{student.full_name}</h2><p className="truncate text-sm" style={{ color: "var(--text-secondary)" }}>{student.email}</p></div>
+                <div className="min-w-0"><h2 id="student-profile-title" className="truncate text-xl font-bold" style={{ color: "var(--text-primary)" }}>{student.full_name}</h2><p className="truncate text-sm" style={{ color: "var(--text-secondary)" }}>{student.email}</p><p className="mono mt-1 text-xs" style={{ color: "var(--accent)" }}>{student.registration_number ?? "Registration number not added"}</p></div>
               </div>
               <button type="button" aria-label="Close student profile" title="Close" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md" style={{ color: "var(--text-secondary)" }} onClick={() => setOpen(false)}><X size={18} /></button>
             </header>
             <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: "var(--border)" }}>
-              {[["Estimated time", student.timeSpent], ["Page visits", student.visits], ["Unique pages", student.pages], ["Quiz average", student.attempts ? `${student.average}%` : "-"]].map(([label, value]) => <div key={label} className="p-5" style={{ background: "var(--bg-card)" }}><p className="mono text-[10px] uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>{label}</p><p className="mt-2 text-lg font-semibold" style={{ color: "var(--text-primary)" }}>{value}</p></div>)}
+              {metrics.map(([Icon, label, value]) => <div key={label} className="p-4 sm:p-5" style={{ background: "var(--bg-card)" }}><Icon size={15} style={{ color: "var(--accent)" }} /><p className="mono mt-3 text-[10px] uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>{label}</p><p className="mt-1 text-lg font-semibold" style={{ color: "var(--text-primary)" }}>{value}</p></div>)}
             </div>
             <div className="grid gap-8 p-6 lg:grid-cols-2">
               <div><h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Account and engagement</h3><dl className="mt-3 space-y-3 text-sm"><div className="flex justify-between gap-4"><dt style={{ color: "var(--text-secondary)" }}>Joined</dt><dd className="text-right" style={{ color: "var(--text-primary)" }}>{formatDate(student.created_at)}</dd></div><div className="flex justify-between gap-4"><dt style={{ color: "var(--text-secondary)" }}>Last seen</dt><dd className="text-right" style={{ color: "var(--text-primary)" }}>{formatDate(student.last_seen)}</dd></div><div className="flex justify-between gap-4"><dt style={{ color: "var(--text-secondary)" }}>Feedback sent</dt><dd className="text-right" style={{ color: "var(--text-primary)" }}>{student.feedback}</dd></div></dl></div>
