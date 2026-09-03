@@ -1,140 +1,865 @@
 [
   {
-    "question": "In classful IPv4 addressing, which class is intended for very large organizations and starts with binary '0'?",
-    "options": ["Class A", "Class B", "Class C", "Class D"],
-    "answer": 0,
-    "explanation": "Class A addresses begin with a leading bit of 0, reserving the first octet for the network ID and the remaining three for hosts - suited to very large networks."
-  },
-  {
-    "question": "Which IPv4 class is reserved for multicasting?",
-    "options": ["Class B", "Class C", "Class D", "Class E"],
-    "answer": 2,
-    "explanation": "Class D addresses (224.0.0.0–239.255.255.255) are reserved for multicast group communication, not for individual host addressing."
-  },
-  {
-    "question": "To find which network an IP address belongs to given a subnet mask, which operation is performed?",
-    "options": ["OR the IP with the mask", "AND the IP with the mask", "XOR the IP with the mask", "Add the IP and the mask"],
-    "answer": 1,
-    "explanation": "The Network ID is found by performing a bitwise AND between the IP address and the subnet mask."
-  },
-  {
-    "question": "For the address 192.168.60.55/20, what is the Network ID?",
-    "options": ["192.168.48.0", "192.168.32.0", "192.168.60.0", "192.168.0.0"],
-    "answer": 0,
-    "explanation": "With a /20 mask, the third octet (60) is ANDed against 240, giving 48 - so the Network ID is 192.168.48.0, as worked through in the notes."
-  },
-  {
-    "question": "For the address 192.168.60.55/20, what is the Broadcast ID?",
-    "options": ["192.168.63.255", "192.168.55.255", "192.168.255.255", "192.168.60.255"],
-    "answer": 0,
-    "explanation": "For a /20 block starting at 192.168.48.0, the broadcast address is the last address in that block: 192.168.63.255."
-  },
-  {
-    "question": "For the address 172.10.85.60/22, what is the usable host range?",
+    "question": "Why is IP addressing hierarchical rather than simply identifying every device with a completely unrelated number?",
     "options": [
-      "172.10.84.1 – 172.10.87.254",
-      "172.10.85.1 – 172.10.85.254",
-      "172.10.84.0 – 172.10.87.255",
-      "172.10.80.1 – 172.10.83.254"
+      "It allows a device to be reached first through its network and then through its host information",
+      "It prevents routers from using routing tables",
+      "It guarantees every network has the same number of hosts",
+      "It eliminates the need for subnet masks"
     ],
     "answer": 0,
-    "explanation": "With a /22 mask, the block is 172.10.84.0 to 172.10.87.255; excluding the network and broadcast addresses, usable hosts run from 172.10.84.1 to 172.10.87.254."
+    "explanation": "IP addressing is hierarchical: the network ID identifies the network, while the host ID identifies the device within that network."
   },
+
   {
-    "question": "For the address 172.10.60.16/29, what is the Broadcast ID?",
-    "options": ["172.10.60.23", "172.10.60.31", "172.10.60.17", "172.10.60.255"],
-    "answer": 0,
-    "explanation": "A /29 mask allocates blocks of 8 addresses. Starting at 172.10.60.16, the block runs to 172.10.60.23, which is the broadcast address."
-  },
-  {
-    "question": "Which of the following is NOT one of the required conditions for valid supernetting?",
+    "question": "An IPv4 address is represented as four decimal numbers separated by dots. How many bits does the complete address contain?",
     "options": [
-      "All networks must have the same subnet mask",
-      "Networks must be contiguous",
-      "The number of networks combined must be a power of 2",
-      "All networks must belong to different IP classes"
+      "16 bits",
+      "24 bits",
+      "32 bits",
+      "64 bits"
+    ],
+    "answer": 2,
+    "explanation": "IPv4 uses a 32-bit address, normally represented as four 8-bit octets in dotted-decimal notation."
+  },
+
+  {
+    "question": "Which statement correctly describes the purpose of the network ID in an IPv4 address?",
+    "options": [
+      "It identifies the specific application running on a device",
+      "It identifies the network to which the device belongs",
+      "It identifies the physical MAC address",
+      "It identifies the transport protocol being used"
+    ],
+    "answer": 1,
+    "explanation": "The network portion identifies the network, while the host portion identifies a device within that network."
+  },
+
+  {
+    "question": "An administrator is working with an IPv4 address at the bit level and needs to determine which portion represents the network. Which tool is used to establish this boundary?",
+    "options": [
+      "Subnet mask",
+      "MAC address",
+      "DNS server",
+      "Default gateway only"
+    ],
+    "answer": 0,
+    "explanation": "A subnet mask contains 1s for the network/subnet portion and 0s for the host portion."
+  },
+
+  {
+    "question": "Which class was designed for organizations requiring very large numbers of hosts?",
+    "options": [
+      "Class A",
+      "Class B",
+      "Class C",
+      "Class D"
+    ],
+    "answer": 0,
+    "explanation": "Class A provides a very large host portion and was designed for large organizations with many hosts or routers."
+  },
+
+  {
+    "question": "An address begins with binary 10 in its first two bits. Which classful IPv4 class does it belong to?",
+    "options": [
+      "Class A",
+      "Class B",
+      "Class C",
+      "Class D"
+    ],
+    "answer": 1,
+    "explanation": "Class B addresses begin with the binary prefix 10."
+  },
+
+  {
+    "question": "An address begins with binary 110. Which class does it belong to?",
+    "options": [
+      "Class A",
+      "Class B",
+      "Class C",
+      "Class E"
+    ],
+    "answer": 2,
+    "explanation": "Class C addresses begin with the binary prefix 110."
+  },
+
+  {
+    "question": "A packet needs to be delivered to a selected group of receivers rather than to one specific host. Which addressing type is appropriate?",
+    "options": [
+      "Unicast",
+      "Multicast",
+      "Network address",
+      "Host-only address"
+    ],
+    "answer": 1,
+    "explanation": "Multicast allows copies of a packet to be sent to a selected group of receivers."
+  },
+
+  {
+    "question": "Why can't the network address itself normally be assigned to an individual host?",
+    "options": [
+      "It identifies the network itself",
+      "It is always a multicast address",
+      "It is reserved for the DNS server",
+      "It identifies the physical cable"
+    ],
+    "answer": 0,
+    "explanation": "The network address is the first address in a block and identifies the network itself rather than an individual host."
+  },
+
+  {
+    "question": "What is the main problem with using a large classful network without subnetting?",
+    "options": [
+      "The network cannot use routers",
+      "Address space can be used inefficiently and traffic remains in one large network",
+      "Every host receives the same IP address",
+      "Broadcast communication becomes impossible"
+    ],
+    "answer": 1,
+    "explanation": "Without subnetting, a large network may waste address space and have inefficient traffic organization."
+  },
+
+  {
+    "question": "An organization divides one large network into several smaller logical networks. What technique is being used?",
+    "options": [
+      "Supernetting",
+      "Subnetting",
+      "NAT",
+      "Multicasting"
+    ],
+    "answer": 1,
+    "explanation": "Subnetting divides one larger network into smaller subnetworks."
+  },
+
+  {
+    "question": "What additional level of hierarchy is introduced by subnetting?",
+    "options": [
+      "Application ID",
+      "Subnet ID",
+      "MAC ID",
+      "Port ID"
+    ],
+    "answer": 1,
+    "explanation": "Subnetting creates an intermediate level between the network ID and host ID: the subnet ID."
+  },
+
+  {
+    "question": "After subnetting, which sequence best represents the routing hierarchy described in the chapter?",
+    "options": [
+      "Host → network → subnet",
+      "Network → host → subnet",
+      "Site/network → sub-network → host",
+      "Subnet → application → host"
+    ],
+    "answer": 2,
+    "explanation": "The chapter describes routing as delivery to the site, delivery to the sub-network, and finally delivery to the host."
+  },
+
+  {
+    "question": "Which default subnet mask belongs to a Class C network in classful addressing?",
+    "options": [
+      "255.0.0.0",
+      "255.255.0.0",
+      "255.255.255.0",
+      "255.255.255.255"
+    ],
+    "answer": 2,
+    "explanation": "The default Class C subnet mask is 255.255.255.0."
+  },
+
+  {
+    "question": "A router receives an IP address and subnet mask and needs to determine the corresponding network ID. What operation should it perform?",
+    "options": [
+      "OR",
+      "AND",
+      "XOR",
+      "Addition"
+    ],
+    "answer": 1,
+    "explanation": "The network/subnet ID is obtained by performing a bitwise AND between the IP address and subnet mask."
+  },
+
+  {
+    "question": "What does a 1 in a subnet mask indicate?",
+    "options": [
+      "The corresponding bit belongs to the host portion",
+      "The corresponding bit belongs to the network/subnet portion",
+      "The bit must always be zero in the IP address",
+      "The bit represents a MAC address"
+    ],
+    "answer": 1,
+    "explanation": "Subnet-mask 1s identify the network and subnet portion, while 0s identify the host portion."
+  },
+
+  {
+    "question": "For the IP address 192.168.10.35 with subnet mask 255.255.255.0, what is the subnet ID?",
+    "options": [
+      "192.168.10.0",
+      "192.168.10.35",
+      "192.168.0.0",
+      "192.168.10.255"
+    ],
+    "answer": 0,
+    "explanation": "ANDing 192.168.10.35 with 255.255.255.0 produces 192.168.10.0."
+  },
+
+  {
+    "question": "For 192.168.10.132/25, which subnet contains the address?",
+    "options": [
+      "192.168.10.0/25",
+      "192.168.10.64/25",
+      "192.168.10.128/25",
+      "192.168.10.192/25"
+    ],
+    "answer": 2,
+    "explanation": "A /25 divides the last octet into blocks of 128. The address 132 falls in the 128–255 block, whose network ID is 192.168.10.128."
+  },
+
+  {
+    "question": "For 192.168.10.35/26, which subnet contains the address?",
+    "options": [
+      "192.168.10.0/26",
+      "192.168.10.64/26",
+      "192.168.10.128/26",
+      "192.168.10.192/26"
+    ],
+    "answer": 0,
+    "explanation": "A /26 creates blocks of 64 addresses: 0–63, 64–127, 128–191, and 192–255. Address 35 belongs to the first block."
+  },
+
+  {
+    "question": "For 192.168.10.75/26, what is the network ID?",
+    "options": [
+      "192.168.10.0",
+      "192.168.10.64",
+      "192.168.10.128",
+      "192.168.10.192"
+    ],
+    "answer": 1,
+    "explanation": "The /26 blocks are 0–63, 64–127, 128–191, and 192–255. Since 75 falls in 64–127, the network ID is 192.168.10.64."
+  },
+
+  {
+    "question": "For 192.168.10.137/26, what is the network ID?",
+    "options": [
+      "192.168.10.0",
+      "192.168.10.64",
+      "192.168.10.128",
+      "192.168.10.192"
+    ],
+    "answer": 2,
+    "explanation": "Address 137 falls in the 128–191 block, so the network ID is 192.168.10.128."
+  },
+
+  {
+    "question": "For 192.168.10.199/26, what is the broadcast address?",
+    "options": [
+      "192.168.10.191",
+      "192.168.10.192",
+      "192.168.10.254",
+      "192.168.10.255"
     ],
     "answer": 3,
-    "explanation": "Supernetting requires equal-size (same mask) contiguous blocks combined in powers of 2 - it does not require networks to be from different classes; in fact they're typically combined within the same class range."
+    "explanation": "Address 199 belongs to the 192–255 subnet. Therefore, 192.168.10.255 is its broadcast address."
   },
+
   {
-    "question": "What is the primary purpose of NAT (Network Address Translation)?",
+    "question": "A /26 subnet is created from 192.168.10.0/24. How many usable host addresses does each subnet provide?",
     "options": [
-      "To encrypt traffic between two hosts",
-      "To translate private IP addresses to a public IP address for internet access",
-      "To assign MAC addresses to new devices",
-      "To split one network into multiple broadcast domains"
+      "30",
+      "62",
+      "64",
+      "126"
     ],
     "answer": 1,
-    "explanation": "NAT allows multiple devices on a private network to share a single public IP address when communicating with the internet."
+    "explanation": "A /26 leaves 6 host bits, giving 2^6 = 64 total addresses. Excluding network and broadcast addresses leaves 62 usable hosts."
   },
+
   {
-    "question": "Which network device operates by simply regenerating and amplifying a signal, with no filtering or addressing intelligence?",
-    "options": ["Switch", "Router", "Repeater", "Bridge"],
-    "answer": 2,
-    "explanation": "A repeater's only job is to regenerate a weakened signal so it can travel further, without inspecting or filtering traffic."
-  },
-  {
-    "question": "Which device operates at a higher layer and can filter traffic based on MAC addresses, dividing a network into separate collision domains?",
-    "options": ["Hub", "Repeater", "Bridge", "None of these"],
-    "answer": 2,
-    "explanation": "A bridge examines MAC addresses to decide whether to forward frames between segments, effectively separating collision domains - unlike a hub, which just broadcasts to all ports."
-  },
-  {
-    "question": "What is a key benefit of configuring VLANs on a switch?",
+    "question": "A /26 mask is applied to a Class C /24 network. How many equal-sized subnets are created?",
     "options": [
-      "It physically separates cables into different rooms",
-      "It logically groups devices into separate broadcast domains regardless of physical location",
-      "It increases the maximum cable length allowed",
-      "It converts digital signals to analog"
+      "2",
+      "4",
+      "8",
+      "16"
     ],
     "answer": 1,
-    "explanation": "VLANs let you logically segment a switch into multiple broadcast domains, grouping devices by function rather than physical location."
+    "explanation": "The prefix grows from /24 to /26, borrowing 2 host bits for subnetting. 2^2 = 4 subnets."
   },
+
   {
-    "question": "Which of these is a valid private IPv4 address range reserved by IANA for internal networks?",
-    "options": ["8.8.8.0 – 8.8.8.255", "192.168.0.0 – 192.168.255.255", "1.1.1.0 – 1.1.1.255", "203.0.113.0 – 203.0.113.255"],
-    "answer": 1,
-    "explanation": "192.168.0.0/16 is one of the three IANA-reserved private ranges (alongside 10.0.0.0/8 and 172.16.0.0/12), meant for internal use and not routable on the public internet."
-  },
-  {
-    "question": "Which protocol is responsible for resolving an IP address to its corresponding MAC address on a local network?",
-    "options": ["DHCP", "ARP", "NAT", "DNS"],
-    "answer": 1,
-    "explanation": "ARP (Address Resolution Protocol) maps a known IP address to the physical MAC address needed for delivery on a local network segment."
-  },
-  {
-    "question": "What is the main purpose of DHCP in a network?",
+    "question": "For 192.168.60.55/20, what is the subnet mask?",
     "options": [
-      "To translate domain names into IP addresses",
-      "To automatically assign IP addresses and network configuration to devices",
-      "To encrypt data sent over a network",
-      "To physically connect two network segments"
+      "255.255.0.0",
+      "255.255.240.0",
+      "255.255.252.0",
+      "255.255.255.0"
     ],
     "answer": 1,
-    "explanation": "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses, subnet masks, gateways, and other settings to devices joining a network."
+    "explanation": "A /20 contains 20 network bits: 8 + 8 + 4. The fourth bits in the third octet give 11110000, or 240, producing 255.255.240.0."
   },
+
   {
-    "question": "At which OSI/TCP-IP layer does a router primarily operate?",
-    "options": ["Physical Layer", "Data Link Layer", "Network Layer", "Application Layer"],
-    "answer": 2,
-    "explanation": "Routers make forwarding decisions based on IP addresses, which places their primary function at the Network layer."
-  },
-  {
-    "question": "What is the loopback address used to test a device's own network stack?",
-    "options": ["0.0.0.0", "255.255.255.255", "127.0.0.1", "169.254.0.1"],
-    "answer": 2,
-    "explanation": "127.0.0.1 is the standard IPv4 loopback address, used by a device to send traffic to itself for testing purposes."
-  },
-  {
-    "question": "Which statement correctly distinguishes a static IP address from a dynamic one?",
+    "question": "For 192.168.60.55/20, what is the Network ID?",
     "options": [
-      "A static IP changes every time the device reconnects; a dynamic IP never changes",
-      "A static IP is manually configured and stays fixed; a dynamic IP is automatically assigned and may change over time",
-      "Static and dynamic IPs are the same thing with different names",
-      "Only dynamic IPs can be used on the internet"
+      "192.168.32.0",
+      "192.168.48.0",
+      "192.168.60.0",
+      "192.168.64.0"
     ],
     "answer": 1,
-    "explanation": "A static IP address is manually assigned and remains constant, while a dynamic IP is assigned automatically (typically via DHCP) and can change on renewal."
+    "explanation": "The /20 mask has a block size of 16 in the third octet. The value 60 lies in the 48–63 block, so the network ID is 192.168.48.0."
+  },
+
+  {
+    "question": "For 192.168.60.55/20, what is the broadcast address?",
+    "options": [
+      "192.168.48.255",
+      "192.168.60.255",
+      "192.168.63.255",
+      "192.168.64.255"
+    ],
+    "answer": 2,
+    "explanation": "The subnet spans 192.168.48.0 through 192.168.63.255. Therefore, 192.168.63.255 is the broadcast address."
+  },
+
+  {
+    "question": "For 192.168.60.55/20, which is the usable host range?",
+    "options": [
+      "192.168.48.0 – 192.168.63.255",
+      "192.168.48.1 – 192.168.63.254",
+      "192.168.60.1 – 192.168.60.254",
+      "192.168.49.1 – 192.168.62.254"
+    ],
+    "answer": 1,
+    "explanation": "The network address is 192.168.48.0 and the broadcast address is 192.168.63.255. Therefore, usable addresses range from 192.168.48.1 to 192.168.63.254."
+  },
+
+  {
+    "question": "For 172.10.85.60/22, what is the subnet mask?",
+    "options": [
+      "255.255.240.0",
+      "255.255.252.0",
+      "255.255.255.0",
+      "255.255.255.192"
+    ],
+    "answer": 1,
+    "explanation": "A /22 has 8 + 8 + 6 network bits. The third octet is 11111100, which equals 252."
+  },
+
+  {
+    "question": "For 172.10.85.60/22, what is the Network ID?",
+    "options": [
+      "172.10.80.0",
+      "172.10.84.0",
+      "172.10.85.0",
+      "172.10.88.0"
+    ],
+    "answer": 1,
+    "explanation": "A /22 has a block size of 4 in the third octet. The value 85 falls in the 84–87 block, so the network ID is 172.10.84.0."
+  },
+
+  {
+    "question": "For 172.10.85.60/22, what is the broadcast address?",
+    "options": [
+      "172.10.84.255",
+      "172.10.85.255",
+      "172.10.87.255",
+      "172.10.88.255"
+    ],
+    "answer": 2,
+    "explanation": "The /22 subnet covers third-octet values 84 through 87. Therefore, the final address is 172.10.87.255."
+  },
+
+  {
+    "question": "For 172.10.60.16/29, how many total addresses are in the subnet?",
+    "options": [
+      "4",
+      "8",
+      "16",
+      "32"
+    ],
+    "answer": 1,
+    "explanation": "A /29 leaves 3 host bits, so the subnet contains 2^3 = 8 total addresses."
+  },
+
+  {
+    "question": "For 172.10.60.16/29, which is the correct usable host range?",
+    "options": [
+      "172.10.60.16 – 172.10.60.23",
+      "172.10.60.17 – 172.10.60.22",
+      "172.10.60.18 – 172.10.60.23",
+      "172.10.60.0 – 172.10.60.7"
+    ],
+    "answer": 1,
+    "explanation": "The subnet contains addresses 16 through 23. 16 is the network address and 23 is the broadcast address, leaving 17 through 22 as usable hosts."
+  },
+
+  {
+    "question": "An administrator needs a subnet that supports at least 48 hosts. Which subnet mask is the smallest standard choice that satisfies the requirement?",
+    "options": [
+      "/24",
+      "/25",
+      "/26",
+      "/27"
+    ],
+    "answer": 2,
+    "explanation": "A /26 leaves 6 host bits, giving 64 total addresses and 62 usable hosts. A /27 provides only 30 usable hosts."
+  },
+
+  {
+    "question": "A Class C /24 network must be divided into at least 10 equal-sized subnets, with each subnet supporting at least 12 usable hosts. Which prefix is suitable?",
+    "options": [
+      "/26",
+      "/27",
+      "/28",
+      "/29"
+    ],
+    "answer": 2,
+    "explanation": "A /28 creates 16 subnets from a /24 and provides 14 usable hosts per subnet, satisfying both requirements."
+  },
+
+  {
+    "question": "Using 195.1.1.0/28 subnets, what is the network address of subnet 2 if subnet 0 starts at 195.1.1.0?",
+    "options": [
+      "195.1.1.16",
+      "195.1.1.24",
+      "195.1.1.32",
+      "195.1.1.48"
+    ],
+    "answer": 2,
+    "explanation": "A /28 has blocks of 16 addresses: subnet 0 = .0, subnet 1 = .16, subnet 2 = .32."
+  },
+
+  {
+    "question": "Using 195.1.1.0/28, what is the first usable host address in subnet 3?",
+    "options": [
+      "195.1.1.32",
+      "195.1.1.33",
+      "195.1.1.48",
+      "195.1.1.49"
+    ],
+    "answer": 3,
+    "explanation": "Subnet 3 begins at 195.1.1.48. Since .48 is the network address, the first usable host is .49."
+  },
+
+  {
+    "question": "A Class C network 205.11.2.0 must provide at least 30 subnets. Which prefix is sufficient?",
+    "options": [
+      "/27",
+      "/28",
+      "/29",
+      "/30"
+    ],
+    "answer": 2,
+    "explanation": "Starting with /24, borrowing 5 bits gives /29 and creates 2^5 = 32 subnets. This is enough for at least 30."
+  },
+
+  {
+    "question": "If 205.11.2.0/24 is divided into /29 subnets, how many usable hosts does each subnet provide?",
+    "options": [
+      "2",
+      "6",
+      "8",
+      "14"
+    ],
+    "answer": 1,
+    "explanation": "A /29 leaves 3 host bits, giving 8 total addresses. Excluding network and broadcast leaves 6 usable hosts."
+  },
+
+  {
+    "question": "In 205.11.2.0/29 subnetting, what is the third usable host address in subnet 2 if subnet 0 starts at .0?",
+    "options": [
+      "205.11.2.18",
+      "205.11.2.19",
+      "205.11.2.20",
+      "205.11.2.21"
+    ],
+    "answer": 1,
+    "explanation": "Each /29 block contains 8 addresses. Subnet 2 begins at .16, with usable hosts .17–.22. The third usable host is .19."
+  },
+
+  {
+    "question": "What is the main difference between FLSM and VLSM?",
+    "options": [
+      "FLSM uses equal-sized subnets, while VLSM allows different subnet sizes",
+      "FLSM is wireless while VLSM is wired",
+      "FLSM uses IPv6 while VLSM uses IPv4",
+      "FLSM combines networks while VLSM divides them"
+    ],
+    "answer": 0,
+    "explanation": "FLSM divides an address block into equal-sized subnets, while VLSM allows subnetworks of different sizes based on their requirements."
+  },
+
+  {
+    "question": "A company needs one subnet for 100 hosts, another for 30 hosts, and another for 10 hosts. Which approach is better suited to assigning addresses efficiently?",
+    "options": [
+      "FLSM",
+      "VLSM",
+      "NAT",
+      "Supernetting"
+    ],
+    "answer": 1,
+    "explanation": "VLSM allows different subnet sizes, so each group can receive an address block appropriate to its host requirement."
+  },
+
+  {
+    "question": "Why can VLSM use address space more efficiently than FLSM?",
+    "options": [
+      "It allows every subnet to have the same maximum size",
+      "It allows subnet sizes to match the needs of different parts of the network",
+      "It removes the network portion of an IP address",
+      "It eliminates subnet masks"
+    ],
+    "answer": 1,
+    "explanation": "VLSM avoids assigning unnecessarily large equal-sized blocks when different departments or links have different host requirements."
+  },
+
+  {
+    "question": "A network administrator combines several smaller networks into one larger address block. Which technique is being used?",
+    "options": [
+      "Subnetting",
+      "Supernetting",
+      "FLSM",
+      "NAT"
+    ],
+    "answer": 1,
+    "explanation": "Supernetting combines multiple smaller networks into a larger supernetwork."
+  },
+
+  {
+    "question": "What is one major routing benefit of supernetting?",
+    "options": [
+      "It increases the number of MAC addresses",
+      "It reduces routing-table size by summarizing multiple routes",
+      "It encrypts routing updates",
+      "It eliminates the need for IP addresses"
+    ],
+    "answer": 1,
+    "explanation": "Supernetting is used for route aggregation, allowing multiple networks to be represented by a single routing entry and reducing routing-table size."
+  },
+
+  {
+    "question": "Four Class C networks are 200.1.0.0, 200.1.1.0, 200.1.2.0, and 200.1.3.0. What makes them candidates for supernetting?",
+    "options": [
+      "They are contiguous and have equal-sized blocks",
+      "They belong to four different classes",
+      "They have different subnet masks",
+      "They contain different numbers of addresses"
+    ],
+    "answer": 0,
+    "explanation": "The networks are contiguous and have equal-sized /24 blocks, satisfying important supernetting conditions."
+  },
+
+  {
+    "question": "The four networks 200.1.0.0/24 through 200.1.3.0/24 are combined. What is the resulting supernet network ID?",
+    "options": [
+      "200.1.0.0",
+      "200.1.1.0",
+      "200.1.2.0",
+      "200.1.4.0"
+    ],
+    "answer": 0,
+    "explanation": "The four contiguous /24 networks combine into a larger block beginning at 200.1.0.0."
+  },
+
+  {
+    "question": "Which condition would prevent four networks from being directly combined into one supernet according to the chapter?",
+    "options": [
+      "The networks are contiguous",
+      "The networks have equal block sizes",
+      "The number of networks is a power of 2",
+      "The networks have unrelated, non-contiguous ranges"
+    ],
+    "answer": 3,
+    "explanation": "Supernetting requires contiguous networks. Non-contiguous ranges cannot be represented by one simple supernet block."
+  },
+
+  {
+    "question": "Why is classless addressing more flexible than classful addressing?",
+    "options": [
+      "It divides addresses only into Classes A, B, and C",
+      "It allows variable-sized address blocks rather than fixed classes",
+      "It removes the need for routing",
+      "It uses only multicast addresses"
+    ],
+    "answer": 1,
+    "explanation": "Classless addressing does not divide the address space into fixed classes and supports variable-sized blocks."
+  },
+
+  {
+    "question": "A device needs to translate a private internal address into a public address when communicating with the Internet. Which mechanism is responsible?",
+    "options": [
+      "ARP",
+      "NAT",
+      "VLAN",
+      "FLSM"
+    ],
+    "answer": 1,
+    "explanation": "Network Address Translation (NAT) translates addresses between private/internal and public addressing."
+  },
+
+  {
+    "question": "Several devices on a private network access the Internet through a shared public address. Which technology makes this possible?",
+    "options": [
+      "NAT",
+      "ARP",
+      "Bridge learning",
+      "VLSM"
+    ],
+    "answer": 0,
+    "explanation": "NAT allows internal private addresses to be translated for communication using public addressing."
+  },
+
+  {
+    "question": "A signal becomes weak as it travels through a long physical medium. Which device is specifically intended to address this problem by regenerating the signal?",
+    "options": [
+      "Router",
+      "Repeater",
+      "Bridge",
+      "VLAN"
+    ],
+    "answer": 1,
+    "explanation": "A repeater receives a signal before it becomes too weak or corrupted and regenerates the original bit pattern."
+  },
+
+  {
+    "question": "Which statement about a repeater is correct?",
+    "options": [
+      "It examines destination MAC addresses before forwarding",
+      "It chooses the best IP route",
+      "It regenerates the signal without filtering frames",
+      "It creates multiple broadcast domains"
+    ],
+    "answer": 2,
+    "explanation": "A repeater operates at the physical layer and regenerates the signal. It does not perform MAC-based filtering."
+  },
+
+  {
+    "question": "A hub is best described as what type of device?",
+    "options": [
+      "A multiport repeater",
+      "A Layer 3 router",
+      "A DNS server",
+      "A routing processor"
+    ],
+    "answer": 0,
+    "explanation": "The chapter describes a hub as essentially a multiport repeater."
+  },
+
+  {
+    "question": "A network administrator wants to divide a network into smaller segments and prevent unnecessary traffic from crossing between them. Which device is most appropriate?",
+    "options": [
+      "Repeater",
+      "Bridge",
+      "Hub",
+      "Modem"
+    ],
+    "answer": 1,
+    "explanation": "A bridge divides a network into smaller segments and checks frame addresses to determine whether forwarding is necessary."
+  },
+
+  {
+    "question": "A bridge receives a frame whose destination belongs to the same segment from which the frame arrived. What should the bridge generally do?",
+    "options": [
+      "Forward it to every other segment",
+      "Forward it to the router",
+      "Keep the traffic within the current segment",
+      "Convert it into an IP packet"
+    ],
+    "answer": 2,
+    "explanation": "A bridge checks the destination address and only forwards the frame to the segment where the destination belongs. If it is already on the same segment, forwarding is unnecessary."
+  },
+
+  {
+    "question": "A learning bridge receives a frame containing a destination address that it has not yet learned. What can it do according to the chapter?",
+    "options": [
+      "Discard the frame immediately",
+      "Relay the frame to all stations while learning from responses",
+      "Send it only to the router",
+      "Convert the destination address to a subnet mask"
+    ],
+    "answer": 1,
+    "explanation": "If a destination is not recognized, a learning bridge can relay the frame to all stations and update its table based on the responses."
+  },
+
+  {
+    "question": "Why is a spanning tree algorithm useful when redundant bridges exist?",
+    "options": [
+      "It increases the number of IP addresses",
+      "It prevents infinite loops caused by redundant bridge paths",
+      "It converts a bridge into a router",
+      "It assigns MAC addresses"
+    ],
+    "answer": 1,
+    "explanation": "Spanning tree identifies redundant paths and prevents packets from looping indefinitely between bridges."
+  },
+
+  {
+    "question": "What is the key difference between a Layer 2 switch and a traditional bridge according to the chapter?",
+    "options": [
+      "A Layer 2 switch is essentially a multiport bridge designed for faster performance",
+      "A Layer 2 switch works only at the application layer",
+      "A Layer 2 switch cannot forward frames",
+      "A Layer 2 switch is a type of repeater with no ports"
+    ],
+    "answer": 0,
+    "explanation": "The chapter describes a two-layer switch as a bridge with many ports designed for faster performance."
+  },
+
+  {
+    "question": "A company wants departments to remain logically separated even when their computers are connected to different physical switches. Which technology is appropriate?",
+    "options": [
+      "Repeater",
+      "VLAN",
+      "Supernetting",
+      "NAT"
+    ],
+    "answer": 1,
+    "explanation": "A VLAN logically divides a LAN and can group stations connected to different switches into the same logical segment."
+  },
+
+  {
+    "question": "An employee moves from one workgroup to another. The administrator wants to change the employee's logical network membership without physically rewiring the network. Which technology helps?",
+    "options": [
+      "VLAN",
+      "Repeater",
+      "Coaxial cable",
+      "Classful addressing"
+    ],
+    "answer": 0,
+    "explanation": "VLANs allow logical grouping of devices without requiring physical rewiring when workgroups change."
+  },
+
+  {
+    "question": "Which of the following can be used as a criterion for VLAN membership according to the chapter?",
+    "options": [
+      "Switch port number",
+      "MAC address",
+      "IP address",
+      "All of these"
+    ],
+    "answer": 3,
+    "explanation": "VLAN membership can be classified using switch port numbers, MAC addresses, IP addresses, IP multicast addresses, or combinations of these."
+  },
+
+  {
+    "question": "A router receives a packet and checks its header before consulting its forwarding information to determine the appropriate outgoing interface. Which router function is this?",
+    "options": [
+      "Forwarding",
+      "Subnetting",
+      "Encryption",
+      "VLAN membership"
+    ],
+    "answer": 0,
+    "explanation": "Forwarding is the process of receiving a packet, checking it, consulting the forwarding information, and sending it through the appropriate output port."
+  },
+
+  {
+    "question": "A router determines the best path that a packet should take toward its destination. Which router function is this?",
+    "options": [
+      "Forwarding",
+      "Routing",
+      "Bridging",
+      "Regeneration"
+    ],
+    "answer": 1,
+    "explanation": "Routing is the process of determining the best path toward the destination, while forwarding sends the packet through the selected output port."
+  },
+
+  {
+    "question": "A network contains many routers and routes change as the network changes. Which routing-table approach is more appropriate?",
+    "options": [
+      "Static routing",
+      "Dynamic routing",
+      "Manual VLAN routing",
+      "Physical routing"
+    ],
+    "answer": 1,
+    "explanation": "Dynamic routing uses routing protocols and communication between routers to determine available routes, making it suitable for larger networks."
+  },
+
+  {
+    "question": "A small network has only two or three routers and its administrator wants to manually configure the routes. Which routing approach fits the chapter?",
+    "options": [
+      "Dynamic routing",
+      "Static routing",
+      "Multicast routing",
+      "VLAN routing"
+    ],
+    "answer": 1,
+    "explanation": "The chapter describes static routing as suitable for small networks with a small number of routers."
+  },
+
+  {
+    "question": "Which device primarily operates at the Network layer and connects different networks together?",
+    "options": [
+      "Repeater",
+      "Hub",
+      "Router",
+      "Bridge"
+    ],
+    "answer": 2,
+    "explanation": "A router is a Layer 3 device that connects different networks and forwards IP packets based on destination addresses."
+  },
+
+  {
+    "question": "A company needs to extend a LAN because the physical medium cannot reliably carry a signal over the required distance. Which device is most directly suited to this problem?",
+    "options": [
+      "Repeater",
+      "Router",
+      "VLAN",
+      "Routing processor"
+    ],
+    "answer": 0,
+    "explanation": "Repeaters solve attenuation problems by regenerating signals and extending the physical length of a network."
+  },
+
+  {
+    "question": "Which device makes forwarding decisions using IP destination information rather than simply regenerating a signal?",
+    "options": [
+      "Repeater",
+      "Hub",
+      "Router",
+      "Physical-layer bridge"
+    ],
+    "answer": 2,
+    "explanation": "Routers operate at Layer 3 and use IP addresses and routing information to forward packets between networks."
+  },
+
+  {
+    "question": "A company has separate LANs on multiple floors and wants to connect those LANs using a central switch as the backbone. Which backbone arrangement best matches the chapter?",
+    "options": [
+      "Star backbone",
+      "Bus backbone",
+      "Ring-only backbone",
+      "Point-to-point host backbone"
+    ],
+    "answer": 0,
+    "explanation": "A star or collapsed backbone uses one switch to connect multiple LANs and is described as a distribution backbone inside a building."
+  },
+
+  {
+    "question": "Which statement best distinguishes subnetting from supernetting?",
+    "options": [
+      "Subnetting combines networks; supernetting divides them",
+      "Subnetting divides one network into smaller networks; supernetting combines multiple networks into a larger one",
+      "Both perform exactly the same operation",
+      "Subnetting is only for wireless networks"
+    ],
+    "answer": 1,
+    "explanation": "Subnetting divides a larger network into smaller subnetworks, while supernetting combines multiple smaller networks into a larger supernetwork."
+  },
+
+  {
+    "question": "A network administrator has three departments requiring 10, 50, and 120 hosts respectively. Which approach is most likely to minimize wasted addresses?",
+    "options": [
+      "Use one identical subnet size for every department",
+      "Use VLSM and assign different subnet sizes",
+      "Use supernetting",
+      "Avoid subnetting completely"
+    ],
+    "answer": 1,
+    "explanation": "VLSM allows different subnet sizes to be assigned according to actual host requirements, improving address utilization."
   }
 ]

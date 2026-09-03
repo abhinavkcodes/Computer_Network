@@ -4,11 +4,8 @@ import { useProgress } from "@/lib/progressStore";
 import { Check, X, Flame, RotateCcw, ListChecks } from "lucide-react";
 import u1 from "@/data/quizzes/unit-1.json";
 import u2 from "@/data/quizzes/unit-2.json";
-import u3 from "@/data/quizzes/unit-3.json";
-import u4 from "@/data/quizzes/unit-4.json";
-import u5 from "@/data/quizzes/unit-5.json";
 
-const bank: any = { unit1: u1, unit2: u2, unit3: u3, unit4: u4, unit5: u5 };
+const bank: any = { unit1: u1, unit2: u2 };
 
 type Answer = { question: string; picked: number; correct: number; isCorrect: boolean; explanation: string; options: string[] };
 
@@ -189,10 +186,10 @@ export function QuizRunner({ unit }: { unit: string }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Progress */}
-      <div className="card p-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="card p-4">
+        <div className="mb-3 flex items-center justify-between">
           <span className="mono text-xs" style={{ color: "var(--text-secondary)" }}>
             Question {i + 1} of {qs.length}
           </span>
@@ -225,12 +222,12 @@ export function QuizRunner({ unit }: { unit: string }) {
       </div>
 
       {/* Question */}
-      <div className="card p-8 animate-in" key={i}>
-        <h2 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>
+      <div className="card p-5 sm:p-6 animate-in" key={i}>
+        <h2 className="text-xl font-bold leading-snug sm:text-2xl" style={{ color: "var(--text-primary)" }}>
           {q.question}
         </h2>
 
-        <div className="mt-8 space-y-3">
+        <div className="mt-5 space-y-2.5">
           {q.options.map((o: string, n: number) => {
             const isPicked = picked === n;
             const isAnswer = n === q.answer;
@@ -259,7 +256,7 @@ export function QuizRunner({ unit }: { unit: string }) {
                 key={o}
                 onClick={() => choose(n)}
                 disabled={revealed}
-                className="w-full text-left px-6 py-4 rounded-lg border-2 transition font-medium"
+                className="w-full rounded-lg border-2 px-4 py-3 text-left font-medium transition sm:px-5"
                 style={{ borderColor, background: bg, color: textColor, opacity, cursor: revealed ? "default" : "pointer" }}
                 onMouseEnter={(e) => { if (!revealed) e.currentTarget.style.borderColor = "var(--accent)"; }}
                 onMouseLeave={(e) => { if (!revealed) e.currentTarget.style.borderColor = "var(--border)"; }}
@@ -300,10 +297,13 @@ export function QuizRunner({ unit }: { unit: string }) {
           </div>
         )}
 
-        <button type="button" onClick={next} disabled={!revealed} className="btn btn-primary mt-8 w-full py-3">
-          {i === qs.length - 1 ? "Finish Quiz" : "Next Question"}
-          {revealed && <span className="mono text-xs opacity-60 ml-2">(Enter ↵)</span>}
-        </button>
+        <div className="sticky bottom-3 z-10 mt-8 flex items-center gap-3 border-t pt-4" style={{ borderColor: "var(--border)", background: "color-mix(in srgb, var(--bg-card) 92%, transparent)" }}>
+          <button type="button" onClick={next} disabled={!revealed} className="btn btn-primary flex-1 py-2.5">
+            {i === qs.length - 1 ? "Finish Quiz" : "Next Question"}
+            {revealed && <span className="mono text-xs opacity-60 ml-2">(Enter ↵)</span>}
+          </button>
+          {!revealed && <span className="hidden text-xs sm:block" style={{ color: "var(--text-secondary)" }}>Select an answer first</span>}
+        </div>
       </div>
     </div>
   );

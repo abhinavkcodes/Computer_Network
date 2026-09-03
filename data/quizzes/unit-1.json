@@ -1,157 +1,673 @@
 [
   {
-    "question": "In a mesh topology with n devices, how many duplex-mode links are required?",
-    "options": ["n", "n - 1", "n(n - 1)/2", "n²"],
-    "answer": 2,
-    "explanation": "A fully connected mesh needs a dedicated point-to-point link between every pair of devices, giving n(n - 1)/2 links."
-  },
-  {
-    "question": "Which topology becomes completely non-functional if its central hub fails?",
-    "options": ["Mesh", "Ring", "Star", "Bus"],
-    "answer": 2,
-    "explanation": "In a star topology every device connects only to the central hub, so a hub failure takes down the whole network - its one major weakness."
-  },
-  {
-    "question": "Which communication mode allows both devices to transmit and receive at the same time?",
-    "options": ["Simplex", "Half-duplex", "Full-duplex", "None of these"],
-    "answer": 2,
-    "explanation": "Full-duplex (like a telephone call) allows simultaneous two-way transmission, unlike half-duplex where devices take turns."
-  },
-  {
-    "question": "A LAN, as described in the notes, is best characterized as:",
+    "question": "A network connects several computers, but one computer mainly requests files while another controls and provides access to those files. What roles do these computers represent?",
     "options": [
-      "A privately owned network within a single office, building, or campus",
-      "A network that always spans multiple cities",
-      "A network that requires a telephone exchange line",
-      "A network limited to exactly two devices"
+      "Both are servers",
+      "The first is a client and the second is a server",
+      "The first is a router and the second is a client",
+      "Both are clients"
+    ],
+    "answer": 1,
+    "explanation": "A client requests resources, while a server controls and provides access to resources."
+  },
+
+  {
+    "question": "A network must be evaluated using three major criteria according to the chapter. Which combination is correct?",
+    "options": [
+      "Speed, cost, distance",
+      "Performance, reliability, security",
+      "Bandwidth, topology, protocol",
+      "Hardware, software, storage"
+    ],
+    "answer": 1,
+    "explanation": "The chapter identifies performance, reliability, and security as the most important network criteria."
+  },
+
+  {
+    "question": "Two devices are connected by a link whose entire capacity is reserved only for communication between those two devices. What type of connection is this?",
+    "options": [
+      "Multipoint",
+      "Timeshared",
+      "Point-to-point",
+      "Broadcast"
+    ],
+    "answer": 2,
+    "explanation": "A point-to-point connection provides a dedicated link between exactly two devices, with the entire capacity reserved for them."
+  },
+
+  {
+    "question": "Four devices share a single communication link and must take turns using it. How is this multipoint connection classified in the chapter?",
+    "options": [
+      "Spatially shared",
+      "Timeshared",
+      "Point-to-point",
+      "Dedicated"
+    ],
+    "answer": 1,
+    "explanation": "A multipoint connection is timeshared when users must take turns using the shared link."
+  },
+
+  {
+    "question": "A keyboard sends information to a computer, but the keyboard does not receive information back through the communication path. Which communication mode is illustrated?",
+    "options": [
+      "Simplex",
+      "Half-duplex",
+      "Full-duplex",
+      "Multipoint"
     ],
     "answer": 0,
-    "explanation": "LANs are usually privately owned and connect hosts within a single office, building, or campus, offering high speed and security at low cost."
+    "explanation": "Simplex communication is unidirectional. The chapter gives keyboards and traditional monitors as examples."
   },
+
   {
-    "question": "Which network type is typically used to connect banks or college campuses within a single city?",
-    "options": ["PAN", "LAN", "MAN", "WAN"],
-    "answer": 2,
-    "explanation": "A Metropolitan Area Network (MAN) covers towns/cities (around 50 km) and is used for applications like inter-bank communication within a city."
-  },
-  {
-    "question": "In circuit switching, which statement about efficiency and delay is correct?",
+    "question": "Two people use walkie-talkies. Each person can transmit and receive, but they cannot transmit simultaneously. Which mode is being used?",
     "options": [
-      "High efficiency, high delay",
-      "Low efficiency, low delay",
-      "High efficiency, low delay",
-      "Low efficiency, high delay"
+      "Simplex",
+      "Half-duplex",
+      "Full-duplex",
+      "Point-to-point"
     ],
     "answer": 1,
-    "explanation": "Circuit switching dedicates resources for the entire connection duration, which is inefficient when idle, but because resources are pre-reserved, transmission delay is minimal."
+    "explanation": "Half-duplex allows both devices to transmit and receive, but not at the same time. Walkie-talkies are given as an example."
   },
+
   {
-    "question": "Which switching technique is also known as connectionless switching?",
-    "options": ["Circuit switching", "Datagram packet switching", "Virtual circuit switching", "Message switching"],
-    "answer": 1,
-    "explanation": "In datagram packet switching, each packet is treated as an independent entity with no fixed path - hence 'connectionless.'"
-  },
-  {
-    "question": "Which OSI layer is responsible for translation, compression, and encryption?",
-    "options": ["Session Layer", "Presentation Layer", "Transport Layer", "Application Layer"],
-    "answer": 1,
-    "explanation": "The Presentation layer handles translation, compression, and encryption of data between systems."
-  },
-  {
-    "question": "Which OSI layer is responsible for delivering individual packets from source host to destination host?",
-    "options": ["Data Link Layer", "Transport Layer", "Network Layer", "Physical Layer"],
-    "answer": 2,
-    "explanation": "The Network layer is responsible for the delivery of individual packets from the source host to the destination host."
-  },
-  {
-    "question": "How many layers does the TCP/IP protocol suite have when compared against the OSI model?",
-    "options": ["Four", "Five", "Six", "Seven"],
-    "answer": 1,
-    "explanation": "Although originally defined with four layers (host-to-network, internet, transport, application), TCP/IP is commonly compared to OSI as having five layers: physical, data link, network, transport, and application."
-  },
-  {
-    "question": "Which formula correctly gives total latency in a network link?",
+    "question": "A company wants a privately owned network connecting computers throughout one campus. Which network type best fits the chapter's definition?",
     "options": [
-      "Latency = Propagation delay + Transmission delay",
-      "Latency = Propagation delay + Transmission delay + Queueing time + Processing time",
-      "Latency = Bandwidth × Distance",
-      "Latency = Transmission delay − Propagation delay"
+      "PAN",
+      "LAN",
+      "MAN",
+      "WAN"
     ],
     "answer": 1,
-    "explanation": "Total latency includes propagation delay, transmission delay, queueing time, and processing time."
+    "explanation": "A LAN is usually privately owned and connects hosts within a single office, building, or campus."
   },
+
   {
-    "question": "Which guided transmission medium offers the least signal attenuation and immunity to electromagnetic interference?",
-    "options": ["Twisted-pair cable", "Coaxial cable", "Fiber-optic cable", "Shielded twisted pair"],
-    "answer": 2,
-    "explanation": "Fiber-optic cable has less signal attenuation and is immune to electromagnetic interference, though it's more expensive and fragile than copper media."
-  },
-  {
-    "question": "Among unguided media, which offers the highest security and requires no government license?",
-    "options": ["Radio waves", "Microwaves", "Infrared waves", "All offer equal security"],
-    "answer": 2,
-    "explanation": "Per the comparison table, infrared waves offer high security, cannot penetrate solid objects (limiting interception), and need no government license to use."
-  },
-  {
-    "question": "Which topology combines characteristics of two or more different topologies?",
-    "options": ["Ring", "Hybrid", "Bus", "Star"],
-    "answer": 1,
-    "explanation": "A hybrid topology mixes two or more basic topologies (e.g. star-bus, star-ring) to combine their advantages."
-  },
-  {
-    "question": "In a bus topology, what happens if the main backbone cable breaks?",
+    "question": "Several LANs belonging to organizations in the same city need to be interconnected. Which network type is most appropriate according to the chapter?",
     "options": [
-      "Only devices before the break are affected",
-      "The entire network goes down",
-      "Nothing changes, all devices still communicate",
-      "Only the device closest to the break is affected"
+      "PAN",
+      "LAN",
+      "MAN",
+      "WAN"
+    ],
+    "answer": 2,
+    "explanation": "A MAN connects different LANs over a larger geographic area, generally covering towns and cities."
+  },
+
+  {
+    "question": "A bank needs a network connecting offices across several states or countries. Which network type is most appropriate?",
+    "options": [
+      "PAN",
+      "LAN",
+      "MAN",
+      "WAN"
+    ],
+    "answer": 3,
+    "explanation": "WANs cover large distances such as states, countries, and continents."
+  },
+
+  {
+    "question": "A person connects a laptop, mobile phone, and other personal devices within roughly 10 meters. Which network type is described?",
+    "options": [
+      "LAN",
+      "MAN",
+      "WAN",
+      "PAN"
+    ],
+    "answer": 3,
+    "explanation": "A PAN is arranged around an individual person, typically within a range of about 10 meters."
+  },
+
+  {
+    "question": "A network has 6 devices and uses a fully connected mesh topology. How many duplex-mode links are required?",
+    "options": [
+      "6",
+      "10",
+      "15",
+      "30"
+    ],
+    "answer": 2,
+    "explanation": "A fully connected mesh requires n(n − 1)/2 links. For 6 devices: 6 × 5 / 2 = 15."
+  },
+
+  {
+    "question": "Why is a mesh topology relatively robust when one link fails?",
+    "options": [
+      "All devices share one backup cable",
+      "The hub automatically repairs the link",
+      "A single failed link does not incapacitate the entire network",
+      "All devices stop transmitting until the link is repaired"
+    ],
+    "answer": 2,
+    "explanation": "Because each device has dedicated links to other devices, failure of one link does not bring down the entire mesh."
+  },
+
+  {
+    "question": "A network requires many cables and a large number of I/O ports because every device must connect to every other device. Which topology is this?",
+    "options": [
+      "Star",
+      "Bus",
+      "Mesh",
+      "Ring"
+    ],
+    "answer": 2,
+    "explanation": "The large amount of cabling and required I/O ports is a major disadvantage of mesh topology."
+  },
+
+  {
+    "question": "In a star topology, Computer A wants to send data to Computer B. According to the chapter, how does the data normally travel?",
+    "options": [
+      "A sends directly to B",
+      "A sends to the central controller, which relays it to B",
+      "A broadcasts it to every computer",
+      "A sends it around a ring before reaching B"
     ],
     "answer": 1,
-    "explanation": "A bus topology relies on a single shared backbone cable; a break anywhere on it disrupts communication for the entire network."
+    "explanation": "Devices in a star are not directly connected. Data goes through the central controller, usually a hub."
   },
+
   {
-    "question": "Which of these is a common example of a Personal Area Network (PAN)?",
-    "options": ["A campus Wi-Fi network", "Bluetooth connection between a phone and headphones", "A city-wide fiber network", "The internet backbone"],
-    "answer": 1,
-    "explanation": "PANs connect devices within a very short range around a single person, such as a phone paired with Bluetooth headphones."
-  },
-  {
-    "question": "Which is an example of simplex communication?",
-    "options": ["A phone call", "A walkie-talkie conversation", "Data flowing from keyboard to computer", "A video conference"],
-    "answer": 2,
-    "explanation": "Simplex communication only flows in one direction - like a keyboard sending input to a computer, with no data returning the same path."
-  },
-  {
-    "question": "In message switching, how is data forwarded through intermediate nodes?",
+    "question": "A star network has 20 computers. One cable connecting a computer to the hub breaks. What is the expected effect?",
     "options": [
-      "The entire message is stored at each node before being forwarded (store-and-forward)",
-      "Only a dedicated circuit is reserved end-to-end",
-      "Each byte is sent independently in real time",
-      "Messages are never stored, only relayed instantly"
+      "The entire network becomes unusable",
+      "Only that connection is affected",
+      "All computers connected before it stop working",
+      "The hub must be replaced"
+    ],
+    "answer": 1,
+    "explanation": "One advantage of star topology is that failure of one link affects only that link."
+  },
+
+  {
+    "question": "A network uses one long backbone cable with devices attached using drop lines and taps. Which topology is being used?",
+    "options": [
+      "Ring",
+      "Star",
+      "Bus",
+      "Mesh"
+    ],
+    "answer": 2,
+    "explanation": "A bus topology uses one long cable as a backbone, with devices connected through drop lines and taps."
+  },
+
+  {
+    "question": "Why can a bus topology use less cabling than a mesh or star topology?",
+    "options": [
+      "Every device has its own dedicated link",
+      "One backbone cable connects the devices",
+      "No cables are required between devices",
+      "Devices communicate only wirelessly"
+    ],
+    "answer": 1,
+    "explanation": "The bus uses one backbone cable with drop lines to the nodes, reducing the amount of cabling required."
+  },
+
+  {
+    "question": "A break occurs somewhere in the backbone cable of a bus network. What does the chapter state happens?",
+    "options": [
+      "Only the nearest device is disconnected",
+      "Traffic automatically changes direction",
+      "All transmission stops, even between devices on the same side of the break",
+      "Only wireless devices are affected"
+    ],
+    "answer": 2,
+    "explanation": "A fault or break in the bus cable stops all transmission, even between devices located on the same side of the problem."
+  },
+
+  {
+    "question": "A network is arranged hierarchically like branches of a tree, with nodes connected through a central or primary node. Which topology is described?",
+    "options": [
+      "Ring",
+      "Tree",
+      "Mesh",
+      "Bus"
+    ],
+    "answer": 1,
+    "explanation": "Tree topology is also called hierarchical topology because its elements are arranged like branches of a tree."
+  },
+
+  {
+    "question": "In a simple ring topology, a station fails and breaks the ring. What problem can occur?",
+    "options": [
+      "Only that station loses connectivity",
+      "The entire network can be disabled",
+      "The network automatically becomes a star",
+      "Only the central hub is affected"
+    ],
+    "answer": 1,
+    "explanation": "The chapter states that a break in a simple ring can disable the entire network. A dual ring or suitable switch can help solve this weakness."
+  },
+
+  {
+    "question": "A network combines star and bus topologies to obtain characteristics of both. What type of topology is this?",
+    "options": [
+      "Ring",
+      "Hybrid",
+      "Mesh",
+      "Tree"
+    ],
+    "answer": 1,
+    "explanation": "A hybrid topology is an interconnection of two or more basic topologies."
+  },
+
+  {
+    "question": "A communication system reserves resources before data transmission and keeps those resources dedicated until communication ends. Which switching technique is being used?",
+    "options": [
+      "Datagram packet switching",
+      "Message switching",
+      "Circuit switching",
+      "Multipoint switching"
+    ],
+    "answer": 2,
+    "explanation": "Circuit switching reserves resources during connection setup and keeps them dedicated for the duration of the connection."
+  },
+
+  {
+    "question": "Which sequence correctly represents the three phases of circuit switching?",
+    "options": [
+      "Transmission → Setup → Termination",
+      "Setup → Transmission → Termination",
+      "Setup → Termination → Transmission",
+      "Routing → Transmission → Setup"
+    ],
+    "answer": 1,
+    "explanation": "The three phases are connection setup, transmission, and termination."
+  },
+
+  {
+    "question": "Why is circuit switching considered inefficient when a computer connection remains idle for a long time?",
+    "options": [
+      "The connection automatically changes routes",
+      "Dedicated resources remain unavailable to other connections",
+      "Packets become corrupted immediately",
+      "The bandwidth increases during idle periods"
+    ],
+    "answer": 1,
+    "explanation": "Circuit switching keeps resources dedicated for the entire connection, even when no data is being transferred."
+  },
+
+  {
+    "question": "Which situation best matches message switching?",
+    "options": [
+      "A dedicated circuit is reserved before communication",
+      "A complete message is stored at intermediate nodes and then forwarded",
+      "Each packet must follow a fixed preplanned route",
+      "Only one bit can be transmitted at a time"
+    ],
+    "answer": 1,
+    "explanation": "Message switching transfers a complete message as a unit using store-and-forward operation at intermediate nodes."
+  },
+
+  {
+    "question": "What is the main reason message switching can introduce long delays?",
+    "options": [
+      "Every node must store and forward the entire message",
+      "A dedicated circuit is reserved",
+      "Packets are always transmitted simultaneously",
+      "The sender cannot address the destination"
     ],
     "answer": 0,
-    "explanation": "Message switching uses a store-and-forward approach: each intermediate node receives the full message, stores it, and forwards it on to the next node."
+    "explanation": "Each intermediate node stores the entire message before forwarding it, which can introduce significant delay."
   },
+
   {
-    "question": "What best defines 'bandwidth' in networking?",
+    "question": "A large message is divided into smaller units. Each unit contains source, destination, and sequence information and the units are reassembled at the receiver. What technique is described?",
     "options": [
-      "The physical length of a cable",
-      "The maximum rate of data transfer across a given path",
-      "The number of devices connected to a network",
-      "The delay before a signal starts moving"
+      "Circuit switching",
+      "Message switching",
+      "Packet switching",
+      "Simplex communication"
+    ],
+    "answer": 2,
+    "explanation": "Packet switching divides a message into smaller packets that are individually transmitted and reassembled at the destination."
+  },
+
+  {
+    "question": "Packets from the same message are allowed to make routing decisions independently, and no fixed path is established beforehand. Which packet-switching approach is this?",
+    "options": [
+      "Virtual circuit switching",
+      "Datagram packet switching",
+      "Circuit switching",
+      "Message switching"
     ],
     "answer": 1,
-    "explanation": "Bandwidth refers to the maximum rate at which data can be transferred over a network path, usually measured in bits per second."
+    "explanation": "Datagram packet switching treats each packet as an independent entity and does not use a fixed path."
   },
+
   {
-    "question": "Which best distinguishes a collision domain from a broadcast domain?",
+    "question": "A packet-switching system establishes a preplanned route before the messages are sent and keeps that path for the logical connection. Which approach is being used?",
     "options": [
-      "They are exactly the same thing",
-      "A collision domain is where frames may collide; a broadcast domain is where a broadcast frame reaches all devices",
-      "A broadcast domain only exists in wireless networks",
-      "A collision domain only applies to fiber-optic cables"
+      "Datagram packet switching",
+      "Virtual circuit switching",
+      "Message switching",
+      "Simplex switching"
     ],
     "answer": 1,
-    "explanation": "A collision domain is a segment where simultaneous transmissions can collide; a broadcast domain is the extent to which a broadcast frame is propagated - devices like switches separate collision domains but not broadcast domains."
+    "explanation": "Virtual circuit switching is connection-oriented: a route is established before transmission and remains fixed for the logical connection."
+  },
+
+  {
+    "question": "A network becomes overloaded and one intermediate node is busy. Which advantage of packet switching allows packets to potentially avoid that node?",
+    "options": [
+      "Fixed bandwidth",
+      "Dedicated circuits",
+      "Rerouting",
+      "Store-and-forward of complete messages"
+    ],
+    "answer": 2,
+    "explanation": "The chapter lists rerouting packets when a node is busy as a reason packet switching can provide reliable communication."
+  },
+
+  {
+    "question": "Which OSI layer provides services directly to the user?",
+    "options": [
+      "Transport",
+      "Network",
+      "Presentation",
+      "Application"
+    ],
+    "answer": 3,
+    "explanation": "The Application layer is responsible for providing services to the user."
+  },
+
+  {
+    "question": "A system needs to perform translation, compression, and encryption of data. Which OSI layer is responsible?",
+    "options": [
+      "Session",
+      "Presentation",
+      "Transport",
+      "Data Link"
+    ],
+    "answer": 1,
+    "explanation": "The Presentation layer is responsible for translation, compression, and encryption."
+  },
+
+  {
+    "question": "Which OSI layer is responsible for dialog control and synchronization between communicating systems?",
+    "options": [
+      "Session",
+      "Network",
+      "Physical",
+      "Application"
+    ],
+    "answer": 0,
+    "explanation": "The Session layer is responsible for dialog control and synchronization."
+  },
+
+  {
+    "question": "A message must be delivered from one process to another. Which OSI layer is responsible according to the chapter?",
+    "options": [
+      "Network",
+      "Transport",
+      "Data Link",
+      "Physical"
+    ],
+    "answer": 1,
+    "explanation": "The Transport layer is responsible for delivery of a message from one process to another."
+  },
+
+  {
+    "question": "A packet needs to be delivered from the source host to the destination host. Which OSI layer handles this responsibility?",
+    "options": [
+      "Data Link",
+      "Network",
+      "Transport",
+      "Session"
+    ],
+    "answer": 1,
+    "explanation": "The Network layer is responsible for delivery of individual packets from the source host to the destination host."
+  },
+
+  {
+    "question": "A frame is being moved from one network node to the next hop. Which OSI layer is responsible?",
+    "options": [
+      "Physical",
+      "Data Link",
+      "Network",
+      "Transport"
+    ],
+    "answer": 1,
+    "explanation": "The Data Link layer is responsible for moving frames from one hop (node) to the next."
+  },
+
+  {
+    "question": "Which OSI layer is directly associated with transmitting the raw bit stream and forming the physical interface between devices?",
+    "options": [
+      "Physical",
+      "Data Link",
+      "Network",
+      "Presentation"
+    ],
+    "answer": 0,
+    "explanation": "The Physical layer transmits the raw bit stream and forms the physical interface between devices."
+  },
+
+  {
+    "question": "Which statement about the TCP/IP model matches the chapter?",
+    "options": [
+      "TCP/IP always has exactly seven layers",
+      "The original TCP/IP suite was defined with four layers, while it is commonly compared with OSI as five layers",
+      "TCP/IP has exactly three layers",
+      "TCP/IP and OSI have identical layers and functions"
+    ],
+    "answer": 1,
+    "explanation": "The chapter states that the original TCP/IP suite had four layers, but when compared with OSI it can be described using five layers: physical, data link, network, transport, and application."
+  },
+
+  {
+    "question": "A link has a bandwidth of 1 Gbps and a message size of 2,000 bits. Ignoring other delays, what is the transmission delay?",
+    "options": [
+      "2 nanoseconds",
+      "2 microseconds",
+      "2 milliseconds",
+      "2 seconds"
+    ],
+    "answer": 0,
+    "explanation": "Transmission delay = message size / bandwidth = 2,000 / 1,000,000,000 = 0.000002 seconds = 2 microseconds. Therefore the correct option should be 2 microseconds."
+  },
+
+  {
+    "question": "Which formula from the chapter correctly calculates propagation delay?",
+    "options": [
+      "Distance × propagation speed",
+      "Distance / propagation speed",
+      "Message size / propagation speed",
+      "Bandwidth / distance"
+    ],
+    "answer": 1,
+    "explanation": "Propagation delay = Distance / Propagation speed."
+  },
+
+  {
+    "question": "Which factor directly affects transmission delay according to the formula in the chapter?",
+    "options": [
+      "Message size and bandwidth",
+      "Only distance",
+      "Only propagation speed",
+      "Number of OSI layers"
+    ],
+    "answer": 0,
+    "explanation": "Transmission delay = Message size / bandwidth. A larger message increases the delay, while greater bandwidth decreases it."
+  },
+
+  {
+    "question": "A network has high bandwidth but also a very large propagation delay. Which concept describes the amount of data that can occupy the link during this delay?",
+    "options": [
+      "Throughput",
+      "Bandwidth-delay product",
+      "Transmission mode",
+      "Signal attenuation"
+    ],
+    "answer": 1,
+    "explanation": "The bandwidth-delay product represents the number of bits that can fill the link."
+  },
+
+  {
+    "question": "A network is capable of pushing many bits through the network, while bandwidth represents the capacity of the system. Which term describes the actual number of bits that can be pushed through?",
+    "options": [
+      "Latency",
+      "Throughput",
+      "Propagation delay",
+      "Attenuation"
+    ],
+    "answer": 1,
+    "explanation": "The chapter defines throughput as the number of bits that can be pushed through, while bandwidth represents system capacity."
+  },
+
+  {
+    "question": "Which combination correctly represents total latency in the chapter?",
+    "options": [
+      "Propagation + transmission",
+      "Propagation + transmission + queueing + processing",
+      "Bandwidth + throughput",
+      "Distance + bandwidth"
+    ],
+    "answer": 1,
+    "explanation": "Latency = propagation delay + transmission delay + queueing time + processing time."
+  },
+
+  {
+    "question": "A company wants a cheap cable that is easy to install and can be used for high-speed LANs, but it is intended for relatively short distances because of attenuation. Which medium best matches the chapter?",
+    "options": [
+      "UTP",
+      "Fiber optic",
+      "Infrared",
+      "Microwave"
+    ],
+    "answer": 0,
+    "explanation": "The chapter lists UTP as cheap, easy to install, suitable for high-speed LANs, but limited to shorter distances because of attenuation."
+  },
+
+  {
+    "question": "Compared with UTP, which statement about STP matches the chapter?",
+    "options": [
+      "STP has no shielding",
+      "STP has higher capacity and shielding but is more expensive",
+      "STP is always cheaper than UTP",
+      "STP cannot be used for data transmission"
+    ],
+    "answer": 1,
+    "explanation": "STP includes shielding, has higher capacity compared with UTP, and is more expensive than UTP."
+  },
+
+  {
+    "question": "A cable uses an inner copper conductor, a nonconductive middle layer, and an outer copper mesh that helps protect against electromagnetic interference. Which medium is this?",
+    "options": [
+      "UTP",
+      "STP",
+      "Coaxial cable",
+      "Fiber optic"
+    ],
+    "answer": 2,
+    "explanation": "The chapter describes coaxial cable as having an inner copper conductor, nonconductive separation, and an outer copper mesh that helps prevent EMI."
+  },
+
+  {
+    "question": "A coaxial system transmits multiple signals simultaneously. Which type of coaxial transmission is this?",
+    "options": [
+      "Baseband",
+      "Broadband",
+      "Simplex",
+      "Point-to-point"
+    ],
+    "answer": 1,
+    "explanation": "The chapter defines broadband transmission as transmitting multiple signals simultaneously."
+  },
+
+  {
+    "question": "Which part of an optical fiber is the narrow glass or plastic strand through which light is transmitted?",
+    "options": [
+      "Jacket",
+      "Cladding",
+      "Core",
+      "Mesh"
+    ],
+    "answer": 2,
+    "explanation": "The core is the narrow strand of glass or plastic and serves as the light transmission area."
+  },
+
+  {
+    "question": "What is the main function of the cladding in an optical fiber according to the chapter?",
+    "options": [
+      "To provide electrical power",
+      "To provide a lower refractive index that causes reflection within the core",
+      "To increase electromagnetic interference",
+      "To act as the network connector"
+    ],
+    "answer": 1,
+    "explanation": "The cladding provides a lower refractive index at the core interface, causing reflection so light remains transmitted through the core."
+  },
+
+  {
+    "question": "Which medium provides high bandwidth, low signal attenuation, and immunity to electromagnetic interference, but is relatively expensive and fragile?",
+    "options": [
+      "UTP",
+      "Coaxial cable",
+      "Fiber optic cable",
+      "Radio waves"
+    ],
+    "answer": 2,
+    "explanation": "The chapter lists increased bandwidth, low attenuation, and immunity to EMI as advantages of optical fiber, while high cost and fragility are disadvantages."
+  },
+
+  {
+    "question": "Which type of transmission medium carries electromagnetic waves without using a physical conductor?",
+    "options": [
+      "Guided media",
+      "Unguided media",
+      "Coaxial media",
+      "Twisted-pair media"
+    ],
+    "answer": 1,
+    "explanation": "Unguided media transport electromagnetic waves without a physical conductor and are commonly referred to as wireless communication."
+  },
+
+  {
+    "question": "According to the comparison table in the chapter, which unguided medium is omnidirectional?",
+    "options": [
+      "Radio waves",
+      "Microwaves",
+      "Infrared",
+      "All three"
+    ],
+    "answer": 0,
+    "explanation": "The chapter's comparison table describes radio waves as omnidirectional, while microwaves and infrared are unidirectional."
+  },
+
+  {
+    "question": "Which unguided medium cannot penetrate solid objects or walls according to the chapter's comparison table?",
+    "options": [
+      "Radio waves",
+      "Microwaves",
+      "Infrared waves",
+      "All of them"
+    ],
+    "answer": 2,
+    "explanation": "The chapter states that infrared waves cannot penetrate solid objects or walls."
+  },
+
+  {
+    "question": "According to the chapter's comparison table, which unguided medium provides high security and does not require a government license?",
+    "options": [
+      "Radio waves",
+      "Microwaves",
+      "Infrared waves",
+      "All of them"
+    ],
+    "answer": 2,
+    "explanation": "The chapter's table lists infrared as high security and states that no government license is required."
+  },
+
+  {
+    "question": "A network designer needs a wireless medium for long-distance communication and is considering radio waves, microwaves, and infrared. Which option should be eliminated based on the chapter?",
+    "options": [
+      "Radio waves",
+      "Microwaves",
+      "Infrared waves",
+      "None of them"
+    ],
+    "answer": 2,
+    "explanation": "The chapter's comparison table states that infrared is not used for long-distance communication."
   }
 ]
