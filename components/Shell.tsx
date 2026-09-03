@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronUp,
   MessageSquarePlus,
+  UserRound,
   LogOut,
   Moon,
   Sun,
@@ -20,6 +21,7 @@ import {
 import { useProgress } from "@/lib/progressStore";
 import { FeedbackModal } from "@/components/FeedbackModal";
 import { UserAvatar } from "@/components/UserAvatar";
+import { ProfileSetupModal } from "@/components/ProfileSetupModal";
 
 const studentNavItems = [
   { href: "/", label: "Learning home", icon: BookOpen },
@@ -31,6 +33,7 @@ const studentNavItems = [
 const facultyNavItems = [
   { href: "/admin", label: "Faculty overview", icon: BarChart3 },
   { href: "/admin#students", label: "Student roster", icon: Users },
+  { href: "/admin/quizzes", label: "Quiz manager", icon: ClipboardList },
   { href: "/notes", label: "Course materials", icon: BookOpen },
 ];
 
@@ -39,12 +42,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
   const [hash, setHash] = useState("");
-  const [user, setUser] = useState<{ email?: string; name?: string; image?: string; role: "student" | "faculty" } | null>(null);
+  const [user, setUser] = useState<{ email?: string; name?: string; image?: string; role: "student" | "faculty"; registrationNumber?: string | null } | null>(null);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [announcements, setAnnouncements] = useState<{ id: string; title: string; body: string; created_at: string }[]>([]);
   const [showAnnouncements, setShowAnnouncements] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showProfileSetup, setShowProfileSetup] = useState(false);
   const lastRecordedPath = useRef<string | null>(null);
+  const profileLoadVersion = useRef(0);
 
   useEffect(() => {
     setIsDark(theme === "dark");
@@ -61,13 +66,18 @@ export function Shell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const supabase = createClient();
     const loadUser = async () => {
+      const loadVersion = ++profileLoadVersion.current;
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       if (!currentUser) return;
       const syncResponse = await fetch("/api/profile/sync", { method: "POST" });
       const syncedProfile = syncResponse.ok ? await syncResponse.json() : null;
       if (!syncResponse.ok) console.error("Profile sync failed. Run the Supabase schema in SQL Editor.");
-      const { data: profile } = await supabase.from("profiles").select("role").eq("id", currentUser.id).single();
-      setUser({ email: currentUser.email, name: currentUser.user_metadata?.full_name ?? currentUser.email, image: currentUser.user_metadata?.avatar_url ?? currentUser.user_metadata?.picture, role: syncedProfile?.role ?? profile?.role ?? "student" });
+      const { data: profile } = await supabase.from("profiles").select("role, full_name, registration_number").eq("id", currentUser.id).single();
+      if (loadVersion !== profileLoadVersion.current) return;
+      const role = syncedProfile?.role ?? profile?.role ?? "student";
+      const name = profile?.full_name ?? currentUser.user_metadata?.full_name ?? currentUser.email;
+      setUser({ email: currentUser.email, name, image: currentUser.user_metadata?.avatar_url ?? currentUser.user_metadata?.picture, role, registrationNumber: profile?.registration_number });
+      setShowProfileSetup(role === "student" && !profile?.registration_number);
     };
     void loadUser();
     const { data: listener } = supabase.auth.onAuthStateChange(() => void loadUser());
@@ -110,25 +120,25 @@ export function Shell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside
-        className="fixed left-0 top-0 h-screen w-64 border-r flex flex-col transition-colors"
+        className="site-sidebar fixed left-0 top-0 h-screen w-64 border-r flex flex-col transition-colors"
         style={{ background: "var(--sidebar-bg)", borderColor: "rgba(255,255,255,0.08)" }}
       >
         {/* Logo */}
         <div className="px-6 py-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
           <Link href="/" className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-white">CN</span>
-            <span className="mono text-xs uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <span className="sidebar-lab mono text-xs uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.5)" }}>
               Lab
             </span>
           </Link>
-          <p className="text-xs mt-2" style={{ color: "rgba(255,255,255,0.5)" }}>
+          <p className="sidebar-subtitle text-xs mt-2" style={{ color: "rgba(255,255,255,0.5)" }}>
             Computer Networks
           </p>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-6 space-y-0.5">
-          <p className="px-3 pb-3 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>
+          <p className="sidebar-section-label px-3 pb-3 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>
             {user?.role === "faculty" ? "Faculty workspace" : "Student workspace"}
           </p>
           {navItems.map((item) => {
@@ -158,12 +168,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 }}
               >
                 <Icon size={17} strokeWidth={1.8} style={{ color: active ? "var(--sidebar-accent)" : "rgba(255,255,255,0.45)" }} />
-                {item.label}
+                <span className="sidebar-link-label">{item.label}</span>
               </Link>
             );
           })}
 
-          <div className="mt-8 px-3 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>
+          <div className="sidebar-section-label mt-8 px-3 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>
             Connect
           </div>
           {user?.role === "faculty" ? <Link
@@ -172,7 +182,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             style={{ color: "rgba(255,255,255,0.65)" }}
           >
             <Bell size={17} strokeWidth={1.7} />
-            Announcements
+            <span className="sidebar-link-label">Announcements</span>
           </Link> : <button
             type="button"
             className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors"
@@ -188,7 +198,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             onClick={() => setShowAnnouncements((open) => !open)}
           >
             <Bell size={17} strokeWidth={1.7} />
-            Announcements
+            <span className="sidebar-link-label">Announcements</span>
             <span className="ml-auto rounded border px-2 py-0.5 text-xs" style={{ borderColor: "rgba(255,255,255,0.15)", color: "white" }}>
               {announcements.length}
             </span>
@@ -206,7 +216,15 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* Account and theme controls */}
-        <div className="space-y-3 border-t px-4 py-4" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+        <div className="space-y-3 px-4 py-4">
+          <div className="flex items-center justify-end gap-1 border-b pb-3" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <button type="button" aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"} title={isDark ? "Light mode" : "Dark mode"} className="flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-white/10" style={{ color: "rgba(255,255,255,0.7)" }} onClick={() => setTheme(isDark ? "light" : "dark")}>
+              {isDark ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
+            <button type="button" aria-label="Sign out" title="Sign out" className="flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-white/10" style={{ color: "rgba(255,255,255,0.7)" }} onClick={async () => { await createClient().auth.signOut(); window.location.href = "/login"; }}>
+              <LogOut size={17} />
+            </button>
+          </div>
           {user && (
             <div>
               <button
@@ -216,7 +234,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 onClick={() => setIsAccountOpen((open) => !open)}
               >
                 <UserAvatar src={user.image} name={user.name} className="h-9 w-9 bg-white text-slate-900" />
-                <span className="min-w-0 flex-1">
+                <span className="account-details min-w-0 flex-1">
                   <span className="flex min-w-0 items-center gap-1.5 text-sm font-semibold text-white">
                     <span className="min-w-0 truncate">{user.name ?? "Network learner"}</span>
                     <span className="shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold" style={user.role === "faculty" ? { borderColor: "#e0a458", background: "rgba(224,164,88,0.18)", color: "#f4c27d" } : { borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)" }}>
@@ -229,33 +247,30 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </button>
               {isAccountOpen && (
                 <div className="mt-2 space-y-1 rounded-lg border p-2" style={{ borderColor: "rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.16)" }}>
+                  <button type="button" className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm" style={{ color: "rgba(255,255,255,0.8)" }} onClick={() => setShowProfileSetup(true)}>
+                    <UserRound size={16} />
+                    <span className="sidebar-link-label">Profile</span>
+                  </button>
                   <button type="button" className="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm" style={{ color: "rgba(255,255,255,0.8)" }} onClick={() => setShowFeedback(true)}>
                     <MessageSquarePlus size={16} />
-                    Feedback
+                    <span className="sidebar-link-label">Feedback</span>
                   </button>
                 </div>
               )}
             </div>
           )}
-          <div className="flex items-center justify-end gap-2 border-t pt-3" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-            <button type="button" aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"} title={isDark ? "Light mode" : "Dark mode"} className="flex h-9 w-9 items-center justify-center rounded-md" style={{ color: "rgba(255,255,255,0.7)" }} onClick={() => setTheme(isDark ? "light" : "dark")}>
-              {isDark ? <Sun size={17} /> : <Moon size={17} />}
-            </button>
-            <button type="button" aria-label="Sign out" title="Sign out" className="flex h-9 w-9 items-center justify-center rounded-md" style={{ color: "rgba(255,255,255,0.7)" }} onClick={async () => { await createClient().auth.signOut(); window.location.href = "/login"; }}>
-              <LogOut size={17} />
-            </button>
-          </div>
         </div>
       </aside>
 
       {/* Main Content */}
       <main
-        className="ml-64 w-full min-h-screen transition-colors"
+        className="site-main ml-64 min-w-0 w-full min-h-screen transition-colors"
         style={{ background: "var(--bg-light)" }}
       >
-        <div className="mx-auto max-w-6xl px-8 py-10">{children}</div>
+        <div className="site-content mx-auto min-w-0 max-w-6xl px-8 py-10">{children}</div>
       </main>
       {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
+      {showProfileSetup && user && <ProfileSetupModal initialName={user.name ?? ""} initialRegistrationNumber={user.registrationNumber ?? ""} canClose={user.role === "faculty" || Boolean(user.registrationNumber)} title="Your profile" description="Update the details faculty use to identify your work." onClose={() => setShowProfileSetup(false)} onComplete={(name, registrationNumber) => { setUser((current) => current ? { ...current, name, registrationNumber } : current); setShowProfileSetup(false); }} />}
     </div>
   );
 }
