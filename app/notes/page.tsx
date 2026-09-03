@@ -148,7 +148,7 @@ export default function Notes() {
             </div>
           </div>
 
-          <div ref={viewerRef} className="relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 140px)", minHeight: isFullscreen ? undefined : "420px", background: "var(--bg-card)" }}>
+          <div ref={viewerRef} className="notes-viewer relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 140px)", minHeight: isFullscreen ? undefined : "420px", background: "var(--bg-card)" }}>
             {!loaded && (
               <div className="absolute inset-0 flex items-center justify-center" style={{ background: "var(--bg-card)" }}>
                 <div className="text-center">
