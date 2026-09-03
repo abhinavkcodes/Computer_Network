@@ -190,7 +190,7 @@ export function SubnetCalculator() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Mode Tabs */}
       <div className="inline-flex p-1 rounded-lg" style={{ background: "var(--bg-light)", border: "1px solid var(--border)" }}>
         {(["single", "vlsm"] as Mode[]).map((m) => (
@@ -238,7 +238,7 @@ export function SubnetCalculator() {
       </div>
 
       {/* Input Section */}
-      <div className="card p-8">
+      <div className="card p-6 sm:p-7">
         <h2 className="text-xl font-bold mb-1" style={{ color: "var(--text-primary)" }}>
           {mode === "single" ? "Subnet Details" : "VLSM Allocation"}
         </h2>
@@ -248,7 +248,7 @@ export function SubnetCalculator() {
             : "Enter a parent network and the host counts each sub-network needs."}
         </p>
 
-        <div className={`grid gap-6 ${mode === "vlsm" ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+        <div className={`grid gap-4 ${mode === "vlsm" ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "var(--text-primary)" }}>
               Network IP Address
@@ -332,7 +332,8 @@ export function SubnetCalculator() {
       {/* Results */}
       {rows.length > 0 && (
         <>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flex items-end justify-between gap-4 border-b pb-3" style={{ borderColor: "var(--border)" }}><div><p className="mono text-xs uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>Live calculation</p><h2 className="mt-1 text-xl font-bold" style={{ color: "var(--text-primary)" }}>{mode === "single" ? "Subnet breakdown" : "Allocated subnets"}</h2></div><span className="text-xs" style={{ color: "var(--text-secondary)" }}>{rows.length} result{rows.length === 1 ? "" : "s"}</span></div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {rows.map((r, idx) => (
               <div
                 key={r.cidr}
