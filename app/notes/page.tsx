@@ -3,21 +3,46 @@ import { useEffect, useRef, useState } from "react";
 import { Download, ExternalLink, FileWarning, ChevronLeft, ChevronRight, Maximize, Minimize } from "lucide-react";
 import { units } from "@/lib/content";
 
+// iOS Safari (and some in-app browsers) cannot render <object>/<embed>/<iframe>
+// PDFs inline — they just show a blank frame with no error event we can catch.
+// Rather than waiting for a load/error signal that may never fire, detect the
+// known-bad case up front and show the "open externally" card immediately.
+function detectsInlinePdfSupport() {
+  if (typeof navigator === "undefined") return true;
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (ua.includes("Macintosh") && navigator.maxTouchPoints > 1);
+  const isAndroidWebView = /Android/.test(ua) && /wv/.test(ua);
+  return !(isIOS || isAndroidWebView);
+}
+
 export default function Notes() {
   const [u, setU] = useState(1);
   const [loaded, setLoaded] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [canPreviewInline, setCanPreviewInline] = useState(true);
   const viewerRef = useRef<HTMLDivElement>(null);
+  const loadTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // #view=Fit tells the browser's built-in PDF viewer to fit the ENTIRE
-  // page (both width and height) inside the visible area, so page 1 is
-  // fully visible without needing to scroll. #zoom=page-width only fit
-  // the width, which is why the page was taller than the box before.
   const rawSrc = `/notes/Unit-${u}.pdf`;
   const viewSrc = `${rawSrc}#view=Fit`;
 
   useEffect(() => {
+    setCanPreviewInline(detectsInlinePdfSupport());
+  }, []);
+
+  useEffect(() => {
     setLoaded(false);
+    setLoadFailed(false);
+    if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
+    // Belt-and-braces: if the iframe hasn't fired onLoad within a few seconds
+    // (common on flaky mobile connections or blocked inline viewers), fall
+    // back to the "open externally" card instead of spinning forever.
+    loadTimeoutRef.current = setTimeout(() => setLoadFailed((failed) => (loaded ? failed : true)), 6000);
+    return () => {
+      if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [u]);
 
   useEffect(() => {
@@ -42,16 +67,17 @@ export default function Notes() {
       document.exitFullscreen();
     } else {
       viewerRef.current.requestFullscreen().catch(() => {
-            // Fullscreen API can be blocked by browser settings/permissions -
+        // Fullscreen API can be blocked by browser settings/permissions -
         // fail silently rather than throwing an unhandled error.
       });
     }
   };
 
   const idx = units.indexOf(u);
+  const showFallback = !canPreviewInline || loadFailed;
 
   return (
-    <div className="-mt-5 space-y-2 lg:h-[calc(100vh-4.5rem)] lg:overflow-hidden">
+    <div className="-mt-5 space-y-2 lg:h-[calc(100dvh-4.5rem)] lg:overflow-hidden">
       {/* Header */}
       <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
@@ -63,7 +89,7 @@ export default function Notes() {
           </p>
         </div>
         <p className="mono text-xs" style={{ color: "var(--text-secondary)" }}>
-            {units.length} units available · Use ← → to switch
+          {units.length} units available · Use ← → to switch
         </p>
       </div>
 
@@ -87,7 +113,12 @@ export default function Notes() {
                     border: u === n ? "1px solid var(--accent)" : "1px solid var(--border)",
                   }}
                 >
-                  <span className="flex items-center justify-between gap-3"><span>Unit {n}</span><span className="mono text-[10px]" style={{ color: u === n ? "rgba(255,255,255,0.65)" : "var(--text-secondary)" }}>PDF</span></span>
+                  <span className="flex items-center justify-between gap-3">
+                    <span>Unit {n}</span>
+                    <span className="mono text-[10px]" style={{ color: u === n ? "rgba(255,255,255,0.65)" : "var(--text-secondary)" }}>
+                      PDF
+                    </span>
+                  </span>
                 </button>
               ))}
             </div>
@@ -136,52 +167,74 @@ export default function Notes() {
               <span className="mono text-xs hidden sm:inline" style={{ color: "var(--text-secondary)" }}>
                 {idx + 1} of {units.length}
               </span>
-              <button
-                type="button"
-                onClick={toggleFullscreen}
-                className="btn py-2 px-3 text-xs"
-                aria-label={isFullscreen ? "Exit fullscreen" : "View fullscreen"}
-              >
-                {isFullscreen ? <Minimize size={14} /> : <Maximize size={14} />}
-                <span className="hidden sm:inline">{isFullscreen ? "Exit" : "Fullscreen"}</span>
-              </button>
+              {!showFallback && (
+                <button
+                  type="button"
+                  onClick={toggleFullscreen}
+                  className="btn py-2 px-3 text-xs"
+                  aria-label={isFullscreen ? "Exit fullscreen" : "View fullscreen"}
+                >
+                  {isFullscreen ? <Minimize size={14} /> : <Maximize size={14} />}
+                  <span className="hidden sm:inline">{isFullscreen ? "Exit" : "Fullscreen"}</span>
+                </button>
+              )}
             </div>
           </div>
 
-          <div ref={viewerRef} className="notes-viewer relative" style={{ height: isFullscreen ? "100vh" : "calc(100vh - 140px)", minHeight: isFullscreen ? undefined : "420px", background: "var(--bg-card)" }}>
-            {!loaded && (
-              <div className="absolute inset-0 flex items-center justify-center" style={{ background: "var(--bg-card)" }}>
-                <div className="text-center">
-                  <div
-                    className="mx-auto w-8 h-8 rounded-full border-2 animate-spin"
-                    style={{ borderColor: "var(--border)", borderTopColor: "var(--accent)" }}
-                  />
-                  <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>Opening Unit {u} notes...</p>
-                </div>
-              </div>
-            )}
-            <object
-              data={viewSrc}
-              type="application/pdf"
-              className="w-full h-full block"
-              onLoad={() => setLoaded(true)}
-            >
+          <div
+            ref={viewerRef}
+            className="notes-viewer relative"
+            style={{
+              height: isFullscreen ? "100dvh" : "calc(100dvh - 140px)",
+              minHeight: isFullscreen ? undefined : "420px",
+              background: "var(--bg-card)",
+            }}
+          >
+            {showFallback ? (
               <div className="p-8 text-center h-full flex flex-col items-center justify-center" style={{ color: "var(--text-secondary)" }}>
                 <FileWarning size={28} strokeWidth={1.5} style={{ color: "var(--text-secondary)" }} />
                 <p className="mt-3 font-medium" style={{ color: "var(--text-primary)" }}>
-                  PDF preview unavailable
+                  Inline preview isn't supported on this device
                 </p>
                 <p className="mt-1 text-sm max-w-sm">
-                  The file may not be present yet, or your browser can't preview PDFs inline.
-                  Make sure it's placed at{" "}
-                  <code className="mono" style={{ color: "var(--accent)" }}>public/notes/Unit-{u}.pdf</code>
+                  Some mobile browsers can't display PDFs inline. Open the file directly or download it instead.
                 </p>
-                <a href={rawSrc} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5">
-                  <ExternalLink size={14} />
-                  Try opening directly
-                </a>
+                <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <a href={rawSrc} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                    <ExternalLink size={14} />
+                    Open Unit {u} PDF
+                  </a>
+                  <a href={rawSrc} download className="btn">
+                    <Download size={14} />
+                    Download
+                  </a>
+                </div>
               </div>
-            </object>
+            ) : (
+              <>
+                {!loaded && (
+                  <div className="absolute inset-0 flex items-center justify-center" style={{ background: "var(--bg-card)" }}>
+                    <div className="text-center">
+                      <div
+                        className="mx-auto w-8 h-8 rounded-full border-2 animate-spin"
+                        style={{ borderColor: "var(--border)", borderTopColor: "var(--accent)" }}
+                      />
+                      <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>Opening Unit {u} notes...</p>
+                    </div>
+                  </div>
+                )}
+                <iframe
+                  key={u}
+                  src={viewSrc}
+                  title={`Unit ${u} notes PDF`}
+                  className="w-full h-full block border-0"
+                  onLoad={() => {
+                    setLoaded(true);
+                    if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
+                  }}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
