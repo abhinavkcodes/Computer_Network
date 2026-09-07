@@ -243,7 +243,6 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Desktop: sidebar is a static rail, content offset to match. */
 .site-sidebar {
   position: fixed;
   left: 0;
@@ -260,9 +259,7 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
-/* Mobile / tablet: sidebar becomes a full off-canvas drawer, not a
-   squished icon rail — content gets full width back, and the drawer
-   slides in over an overlay instead of permanently eating screen space. */
+
 @media (max-width: 1023px) {
   .mobile-topbar {
     position: fixed;
@@ -337,7 +334,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Narrow desktop / large tablet, sidebar still visible as a static rail */
 @media (min-width: 1024px) and (max-width: 1180px) {
   .site-content {
     padding-left: 1.5rem;
