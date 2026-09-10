@@ -78,7 +78,6 @@ export default function Notes() {
 
   return (
     <div className="-mt-5 space-y-2 lg:h-[calc(100dvh-4.5rem)] lg:overflow-hidden">
-      {/* Header */}
       <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
