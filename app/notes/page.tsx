@@ -142,7 +142,6 @@ export default function Notes() {
               </button>
             </div>
 
-            {/* Actions */}
             <div className="pt-4 border-t space-y-2" style={{ borderColor: "var(--border)" }}>
               <a href={rawSrc} download className="btn btn-primary w-full">
                 <Download size={15} strokeWidth={2} />
