@@ -3,10 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Download, ExternalLink, FileWarning, ChevronLeft, ChevronRight, Maximize, Minimize } from "lucide-react";
 import { units } from "@/lib/content";
 
-// iOS Safari (and some in-app browsers) cannot render <object>/<embed>/<iframe>
-// PDFs inline — they just show a blank frame with no error event we can catch.
-// Rather than waiting for a load/error signal that may never fire, detect the
-// known-bad case up front and show the "open externally" card immediately.
+
 function detectsInlinePdfSupport() {
   if (typeof navigator === "undefined") return true;
   const ua = navigator.userAgent;
@@ -35,14 +32,10 @@ export default function Notes() {
     setLoaded(false);
     setLoadFailed(false);
     if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
-    // Belt-and-braces: if the iframe hasn't fired onLoad within a few seconds
-    // (common on flaky mobile connections or blocked inline viewers), fall
-    // back to the "open externally" card instead of spinning forever.
     loadTimeoutRef.current = setTimeout(() => setLoadFailed((failed) => (loaded ? failed : true)), 6000);
     return () => {
       if (loadTimeoutRef.current) clearTimeout(loadTimeoutRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [u]);
 
   useEffect(() => {
@@ -67,8 +60,6 @@ export default function Notes() {
       document.exitFullscreen();
     } else {
       viewerRef.current.requestFullscreen().catch(() => {
-        // Fullscreen API can be blocked by browser settings/permissions -
-        // fail silently rather than throwing an unhandled error.
       });
     }
   };
@@ -93,7 +84,6 @@ export default function Notes() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:h-[calc(100%-4rem)] lg:grid-cols-4">
-        {/* Unit Selector */}
         <aside className="lg:col-span-1">
           <div className="space-y-3 lg:sticky lg:top-0">
             <h2 className="mono text-xs font-medium uppercase tracking-[0.12em]" style={{ color: "var(--text-secondary)" }}>

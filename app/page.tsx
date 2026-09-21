@@ -45,7 +45,6 @@ const categories = [
 export default function Home() {
   return (
     <div className="space-y-20">
-      {/* Hero */}
       <div className="grid lg:grid-cols-5 gap-10 items-start">
         <div className="lg:col-span-3 max-w-lg">
           <h1
@@ -108,7 +107,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Hops as tools - numbering justified because these ARE the 3 hops above */}
       <div className="grid md:grid-cols-3 gap-px" style={{ background: "var(--border)" }}>
         {hops.map((h) => (
           <Link
@@ -137,7 +135,6 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Syllabus, grouped by real category rather than a flat numbered list */}
       <div>
         <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
           What's in the syllabus
