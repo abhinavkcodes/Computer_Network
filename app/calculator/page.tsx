@@ -3,7 +3,6 @@ import { SubnetCalculator } from "@/components/visualizations/SubnetCalculator";
 export default function CalculatorPage() {
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
           Subnet Calculator
@@ -14,7 +13,6 @@ export default function CalculatorPage() {
         </p>
       </div>
 
-      {/* Calculator */}
       <SubnetCalculator />
     </div>
   );

@@ -106,7 +106,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
     });
   }, [user, pathname]);
 
-  // Close the mobile drawer on route change, and lock body scroll while open.
   useEffect(() => {
     setIsMobileNavOpen(false);
   }, [pathname]);
@@ -133,7 +132,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   const sidebarContents = (
     <>
-      {/* Logo */}
       <div className="flex items-center justify-between px-6 py-6 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <div>
           <Link href="/" className="flex items-baseline gap-2">
@@ -156,7 +154,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </button>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 px-3 py-6 space-y-0.5 overflow-y-auto">
         <p className="sidebar-section-label px-3 pb-3 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>
           {user?.role === "faculty" ? "Faculty workspace" : "Student workspace"}
@@ -213,7 +210,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
         )}
       </nav>
 
-      {/* Account and theme controls */}
       <div className="space-y-3 px-4 py-4">
         <div className="flex items-center justify-end gap-1 border-b pb-3" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
           <button
@@ -281,7 +277,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      {/* Mobile top bar */}
       <div className="mobile-topbar lg:hidden" style={{ background: "var(--sidebar-bg)" }}>
         <button
           type="button"
@@ -298,12 +293,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
         <div className="w-10" />
       </div>
 
-      {/* Mobile overlay */}
       {isMobileNavOpen && (
         <div className="sidebar-overlay lg:hidden" onClick={() => setIsMobileNavOpen(false)} aria-hidden="true" />
       )}
 
-      {/* Sidebar (desktop: static rail. mobile: off-canvas drawer) */}
       <aside
         className={`site-sidebar w-64 border-r flex flex-col transition-transform duration-200 ${isMobileNavOpen ? "site-sidebar-open" : ""}`}
         style={{ background: "var(--sidebar-bg)", borderColor: "rgba(255,255,255,0.08)" }}
@@ -311,7 +304,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
         {sidebarContents}
       </aside>
 
-      {/* Main Content */}
       <main className="site-main min-w-0 w-full min-h-screen transition-colors" style={{ background: "var(--bg-light)" }}>
         <div className="site-content mx-auto min-w-0 max-w-6xl px-8 py-10">{children}</div>
       </main>

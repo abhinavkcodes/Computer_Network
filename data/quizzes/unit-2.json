@@ -839,17 +839,7 @@
     "explanation": "A star or collapsed backbone uses one switch to connect multiple LANs and is described as a distribution backbone inside a building."
   },
 
-  {
-    "question": "Which statement best distinguishes subnetting from supernetting?",
-    "options": [
-      "Subnetting combines networks; supernetting divides them",
-      "Subnetting divides one network into smaller networks; supernetting combines multiple networks into a larger one",
-      "Both perform exactly the same operation",
-      "Subnetting is only for wireless networks"
-    ],
-    "answer": 1,
-    "explanation": "Subnetting divides a larger network into smaller subnetworks, while supernetting combines multiple smaller networks into a larger supernetwork."
-  },
+ 
 
   {
     "question": "A network administrator has three departments requiring 10, 50, and 120 hosts respectively. Which approach is most likely to minimize wasted addresses?",
